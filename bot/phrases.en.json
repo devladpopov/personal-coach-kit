@@ -1,0 +1,50 @@
+{
+  "hello": [
+    "Hi {name}. I am your coach now. I do not sleep, I do not forget, and I know where your dumbbells are.",
+    "Hello {name}. Week {week} of {weeks}. Let's make future you slightly annoyed at how easy this was."
+  ],
+  "morning_train": [
+    "Morning, {name}. Today is {workout} at {time}. Breakfast with protein, not with regret.",
+    "Good morning. {workout} today. Your muscles have been informed and are pretending to be asleep.",
+    "Rise and shine, {name}. Week {week}. {protein} g of protein will not eat itself.",
+    "Morning. Plan for today: {workout}, water, and no heroic snacking at 4 pm.",
+    "Hey {name}. Training day. The streak is {streak}. Let's not be the person who breaks it over a sofa.",
+    "Good morning. Fun fact: nobody ever regretted a workout. Plenty of people regretted the third croissant."
+  ],
+  "morning_rest": [
+    "Morning, {name}. Rest day. Walking counts, scrolling does not.",
+    "Rest day. Muscles grow while you recover, so technically today you are working very hard.",
+    "Good morning. No training today. Protein still on the menu: {protein} g.",
+    "Day off. Go for a walk, drink water, and do not let the rest day become a rest week."
+  ],
+  "workout": [
+    "{workout} in 30 minutes. Shoes on is half the battle. The other half is dumbbells.",
+    "Half an hour to {workout}. Fill a bottle of water and clear a spot on the floor.",
+    "{name}, {workout} starts soon. 45 minutes from now you will feel great. I guarantee it, I am a bot.",
+    "Reminder: {workout} at {time}. The program is ready. Are you?"
+  ],
+  "check": [
+    "So, {name}. Did {workout} happen?",
+    "Report time. {workout}: done or not?",
+    "I am not judging. I am just counting. Did you train today?"
+  ],
+  "done": [
+    "Logged. Streak: {streak}. Look at you being consistent.",
+    "Done and done. Eat your protein and go to bed on time, that is where the progress happens.",
+    "Nice work, {name}. Streak {streak}. Future you says thanks.",
+    "Saved. That is one more workout than the version of you that stayed on the sofa."
+  ],
+  "skipped": [
+    "OK. One skipped day changes nothing. Two in a row is a habit, so see you next session.",
+    "Fine, rest it is. Walk 20 minutes if you can, and we are back on track tomorrow.",
+    "Noted. No guilt, just do the next one."
+  ],
+  "shop": [
+    "Shopping day. Here is the list for next week. Do not go hungry, the biscuits aisle knows.",
+    "Weekend shop time. Stick to the list and the plan cooks itself (almost)."
+  ],
+  "weigh": [
+    "Sunday weigh-in: after the toilet, before food and water. Send /weight 82.4",
+    "Weekly weigh-in. One number per week, no daily drama. /weight and the number."
+  ]
+}

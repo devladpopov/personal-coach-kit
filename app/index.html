@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f1117">
+<title>Coach</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%234f3cc9'/><rect x='10' y='26' width='8' height='12' rx='2' fill='white'/><rect x='46' y='26' width='8' height='12' rx='2' fill='white'/><rect x='18' y='20' width='6' height='24' rx='2' fill='white'/><rect x='40' y='20' width='6' height='24' rx='2' fill='white'/><rect x='24' y='30' width='16' height='4' fill='white'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1 id="title">Coach</h1>
+    <div class="sub" id="subtitle"></div>
+  </div>
+  <div class="top-btns">
+    <button id="langBtn" class="pill" title="Language">EN</button>
+    <button id="themeBtn" class="pill" title="Theme">◐</button>
+  </div>
+</header>
+<section class="stats" id="stats"></section>
+<nav class="tabs" id="tabs"></nav>
+<main id="view"></main>
+
+<div id="timer" class="timer hidden">
+  <div class="timer-label" id="timerLabel"></div>
+  <div class="timer-time" id="timerTime">0:00</div>
+  <div class="timer-btns">
+    <button data-t="-15">-15</button>
+    <button data-t="+15">+15</button>
+    <button data-t="skip" id="timerSkip">Skip</button>
+  </div>
+</div>
+
+<div id="interval" class="interval hidden">
+  <div class="iv-round" id="ivRound"></div>
+  <div class="iv-phase" id="ivPhase"></div>
+  <div class="iv-time" id="ivTime"></div>
+  <div class="iv-btns">
+    <button id="ivPause">Pause</button>
+    <button id="ivStop">Stop</button>
+  </div>
+</div>
+
+<footer class="foot">Built with <a href="https://github.com/devladpopov/personal-coach-kit" target="_blank" rel="noopener">personal-coach-kit</a>. Not medical advice.</footer>
+<script src="app.js"></script>
+</body>
+</html>

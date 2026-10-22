@@ -1,0 +1,11 @@
+# your personal data never goes to git
+data/*
+!data/.gitkeep
+dist/
+.env
+*.log
+node_modules/
+.wrangler/
+.test/
+.site/
+.site-ru/
