@@ -77,7 +77,7 @@ Your log (sets, weights, measurements, shopping ticks) is stored in the browser'
 3. `node coach.mjs phrases` makes your AI write the bot's messages in your coach's personality (the default phrases are in `bot/phrases.en.json` and `bot/phrases.ru.json`).
 4. `node coach.mjs bot`. It uses long polling, so it runs on a laptop, a Raspberry Pi or a $4 VPS without a public address. Keep it alive with `pm2 start coach.mjs -- bot` or a systemd unit.
 
-Reminder times come from `schedule` in your profile and your timezone.
+Set  to the tracker start date so the bot counts the same weeks. Reminder times come from `schedule` in your profile and your timezone.
 
 ## Files
 
