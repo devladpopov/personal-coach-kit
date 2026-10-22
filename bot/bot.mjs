@@ -43,7 +43,10 @@ const toMin = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m;
 const utc = s => { const [a, b, c] = s.split('-').map(Number); return Date.UTC(a, b - 1, c); };
 const daysBetween = (a, b) => Math.round((utc(b) - utc(a)) / 86400000);
 const addDays = (s, n) => new Date(utc(s) + n * 86400000).toISOString().slice(0, 10);
-if (!db.start) { const n = now(); db.start = addDays(n.date, 1 - n.dow); saveDb(); }
+// Week numbers and A/B food weeks count from the Monday of START_DATE (set it to the tracker's start date), or from the first run.
+const mondayOf = d => addDays(d, -((new Date(utc(d)).getUTCDay() + 6) % 7));
+if (process.env.START_DATE) db.start = mondayOf(process.env.START_DATE);
+if (!db.start) { db.start = mondayOf(now().date); saveDb(); }
 const weekNo = d => Math.floor(daysBetween(db.start, d) / 7) + 1;
 const planFor = dow => PROGRAM.days.find(d => d.dow === dow) || { rest: true, name: 'Rest' };
 function menuFor(date) {
