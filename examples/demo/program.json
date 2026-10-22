@@ -1,0 +1,79 @@
+{
+  "title": "Home Recomp 8",
+  "summary": "Four 45-minute dumbbell sessions a week for a busy desk worker who wants to lose belly fat without losing strength. Knee-friendly: no jumps, no deep lunges, split squats are kept short-range.",
+  "weeks": 8,
+  "phases": [
+    { "from": 1, "to": 3, "name": "Foundation", "note": "Learn the movements, stop 2-3 reps before failure, build the habit." },
+    { "from": 4, "to": 6, "name": "Progression", "note": "Add a set to the main lifts, push to 1-2 reps before failure, intervals get longer." },
+    { "from": 7, "to": 8, "name": "Peak", "note": "Heaviest weights of the cycle, last set of each main lift to technical failure." }
+  ],
+  "progression": "Double progression: when you hit the top of the rep range on every set, add the smallest dumbbell step (1-2 kg) next session and drop back to the bottom of the range.",
+  "days": [
+    {
+      "dow": 1,
+      "name": "Upper A",
+      "focus": "chest, back, shoulders",
+      "warmup": ["2 min marching on the spot", "Band pull-aparts x20", "Arm circles 10 each way", "Push-ups on knees x10"],
+      "exercises": [
+        { "name": "DB floor press", "how": "Lie on the floor, elbows at 45 degrees, pause when triceps touch the floor, press up and slightly in.", "sets": 4, "reps": "8-12", "load": "2 x 16 kg", "rest": 90, "tempo": "3-1-1" },
+        { "name": "Pull-ups (band assisted)", "how": "Full hang at the bottom, chest to the bar. Use a thinner band as you get stronger.", "sets": 4, "reps": "5-8", "load": "medium band", "rest": 120, "swap": "DB one-arm rows 4x10" },
+        { "name": "Half-kneeling DB press", "how": "One knee down, squeeze the glute of that leg, press straight up without leaning back.", "sets": 3, "reps": "8-10", "load": "12 kg", "rest": 75 },
+        { "name": "Chest-supported DB row", "how": "Chest on an incline bench or a backpack on a chair, pull elbows to hips, pause 1 s.", "sets": 3, "reps": "10-12", "load": "2 x 14 kg", "rest": 60 },
+        { "name": "DB lateral raise", "how": "Slight forward lean, lead with elbows, stop at shoulder height.", "sets": 3, "reps": "12-15", "load": "2 x 6 kg", "rest": 45 },
+        { "name": "Plank shoulder taps", "how": "Feet wide, hips still, tap the opposite shoulder slowly.", "sets": 3, "reps": "10 each side", "rest": 45 }
+      ],
+      "cooldown": ["Doorway chest stretch 30 s", "Child's pose 45 s", "Slow nasal breathing 1 min"]
+    },
+    {
+      "dow": 2,
+      "name": "Lower A",
+      "focus": "glutes, hamstrings, quads (knee-friendly)",
+      "warmup": ["Glute bridges x15", "Bodyweight box squat to a chair x10", "Leg swings 10 each leg", "Hip circles 10 each way"],
+      "exercises": [
+        { "name": "DB Romanian deadlift", "how": "Soft knees, push hips back until hamstrings are tight, keep dumbbells close to the legs.", "sets": 4, "reps": "8-10", "load": "2 x 18 kg", "rest": 90, "tempo": "3-0-1" },
+        { "name": "Goblet box squat", "how": "Sit back to a chair or box at knee height, pause, stand up. The box keeps the knee comfortable.", "sets": 4, "reps": "10-12", "load": "20 kg", "rest": 90 },
+        { "name": "Short-range split squat", "how": "Back knee stops a hand's width above the floor. Stay pain-free, the range can grow later.", "sets": 3, "reps": "8 each leg", "load": "2 x 8 kg", "rest": 60, "swap": "step-ups on a low step" },
+        { "name": "Single-leg glute bridge", "how": "Drive through the heel, ribs down, hold the top for 2 s.", "sets": 3, "reps": "12 each leg", "rest": 45 },
+        { "name": "Standing calf raise", "how": "On a step edge, full stretch at the bottom, 1 s squeeze at the top.", "sets": 3, "reps": "15-20", "load": "one 16 kg DB", "rest": 45 },
+        { "name": "Dead bug", "how": "Lower back pressed into the floor, move opposite arm and leg slowly.", "sets": 3, "reps": "8 each side", "rest": 30 }
+      ],
+      "cooldown": ["Hamstring stretch on the floor 30 s each", "Couch stretch 30 s each (gentle on the knee)", "Walk 5 min"]
+    },
+    { "dow": 3, "rest": true, "name": "Active rest", "note": "8 000+ steps. 10 minutes of easy mobility in the evening if you feel stiff." },
+    {
+      "dow": 4,
+      "name": "Upper B",
+      "focus": "back, shoulders, arms",
+      "warmup": ["Band dislocates x12", "Scapular pull-ups x8", "Push-ups x8", "Band face pulls x15"],
+      "exercises": [
+        { "name": "One-arm DB row", "how": "Hand and knee on a bench or sofa, pull the dumbbell to the hip, do not twist.", "sets": 4, "reps": "8-12", "load": "20 kg", "rest": 75 },
+        { "name": "Push-ups (tempo)", "how": "3 seconds down, chest touches a fist on the floor, explode up. Elevate hands if form breaks.", "sets": 4, "reps": "8-15", "rest": 75, "tempo": "3-0-X" },
+        { "name": "Seated DB shoulder press", "how": "Back supported, dumbbells start at ear level, press up without arching.", "sets": 3, "reps": "8-10", "load": "2 x 12 kg", "rest": 75 },
+        { "name": "Band face pull", "how": "Band at face height, pull to the forehead with thumbs pointing back, squeeze rear delts.", "sets": 3, "reps": "15-20", "rest": 45 },
+        { "name": "DB hammer curl", "how": "Palms facing each other, elbows pinned, no swinging.", "sets": 3, "reps": "10-12", "load": "2 x 10 kg", "rest": 45 },
+        { "name": "Overhead DB triceps extension", "how": "One dumbbell in both hands, elbows forward, lower behind the head and extend.", "sets": 3, "reps": "10-12", "load": "14 kg", "rest": 45 }
+      ],
+      "cooldown": ["Lat stretch on a door frame 30 s each", "Triceps stretch 30 s each", "Thread the needle 5 each side"]
+    },
+    { "dow": 5, "rest": true, "name": "Rest", "note": "Full rest. Sleep 7.5+ hours, hit your protein." },
+    {
+      "dow": 6,
+      "name": "Lower B + conditioning",
+      "focus": "posterior chain, core, intervals",
+      "warmup": ["Cat-cow x10", "Glute bridges x15", "Bodyweight good mornings x12", "Easy cycling or brisk walk 3 min"],
+      "exercises": [
+        { "name": "DB sumo deadlift", "how": "Wide stance, one heavy dumbbell between the feet, chest up, push the floor away.", "sets": 4, "reps": "10-12", "load": "20 kg", "rest": 75 },
+        { "name": "Hip thrust on a sofa", "how": "Upper back on the sofa edge, dumbbell on the hips, chin tucked, full lockout.", "sets": 4, "reps": "10-15", "load": "20 kg", "rest": 75, "tempo": "2-2-1" },
+        { "name": "Step-up to a low step", "how": "Step 20-30 cm high, drive through the whole foot, control the way down.", "sets": 3, "reps": "10 each leg", "load": "2 x 8 kg", "rest": 60 },
+        { "name": "Side plank", "how": "Elbow under the shoulder, body in one line, hips high.", "sets": 3, "reps": "30 s each side", "rest": 30 },
+        { "name": "Low-impact intervals", "how": "Fast marching with high knees, shadow boxing or a bike. Hard but no jumping.", "type": "interval", "work": 30, "rest": 60, "rounds": 8 }
+      ],
+      "cooldown": ["Pigeon stretch 45 s each", "Hamstring stretch 30 s each", "Box breathing 1 min"]
+    },
+    { "dow": 7, "rest": true, "name": "Long walk", "note": "60 minutes outdoors at a pace where you can still talk. Weekly weigh-in in the morning." }
+  ],
+  "safety": [
+    "Stop any exercise that causes sharp knee pain and use the swap instead.",
+    "If you have a heart condition or high blood pressure, check the plan with your GP before starting the intervals."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "personal-coach-kit",
+  "version": "0.1.0",
+  "description": "Your own AI personal trainer and nutritionist in 5 minutes: questionnaire -> program, meal plan from your store, tracker with timers, optional Telegram bot.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "init": "node coach.mjs init",
+    "generate": "node coach.mjs generate",
+    "demo": "node coach.mjs demo",
+    "serve": "node coach.mjs serve",
+    "build": "node coach.mjs build",
+    "bot": "node coach.mjs bot"
+  },
+  "repository": { "type": "git", "url": "https://github.com/devladpopov/personal-coach-kit" },
+  "keywords": ["fitness", "workout-tracker", "meal-plan", "ai", "llm", "claude", "chatgpt", "gemini", "ollama", "telegram-bot", "self-hosted"]
+}

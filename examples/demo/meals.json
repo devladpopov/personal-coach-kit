@@ -1,0 +1,144 @@
+{
+  "targets": { "kcal": 2100, "protein": 170, "fat": 70, "carbs": 200, "water_l": 2.5 },
+  "store": "Lidl",
+  "currency": "£",
+  "rules": [
+    "Protein in every meal, about a palm and a half.",
+    "Cook chilli and curry on Sunday and Wednesday, they cover two lunches each.",
+    "Water: a glass before every meal, a full bottle during training.",
+    "One treat a week is planned, not forbidden: fit it into the day's calories.",
+    "Weigh yourself on Sunday morning, after the toilet, before food."
+  ],
+  "supplements": [
+    { "name": "Creatine monohydrate", "dose": "5 g", "when": "daily, any time, with water" },
+    { "name": "Vitamin D3", "dose": "1000-2000 IU", "when": "October to March, with breakfast" }
+  ],
+  "weeks": [
+    {
+      "name": "A",
+      "menus": [
+        {
+          "name": "Day 1",
+          "meals": [
+            { "slot": "Breakfast", "title": "Greek yogurt bowl", "items": ["300 g Greek-style yogurt 0%", "40 g porridge oats", "100 g frozen berries", "1 tsp honey"], "how": "Mix the night before so the berries thaw.", "kcal": 470, "protein": 36 },
+            { "slot": "Lunch", "title": "Chicken rice box", "items": ["180 g chicken breast", "75 g basmati rice (dry)", "150 g frozen stir-fry veg", "1 tbsp soy sauce", "1 tsp oil"], "how": "Pan-fry the chicken in strips, add veg and soy for 4 minutes.", "kcal": 640, "protein": 52 },
+            { "slot": "Snack", "title": "Cottage cheese and apple", "items": ["200 g cottage cheese", "1 apple", "15 g almonds"], "how": "No cooking.", "kcal": 330, "protein": 24 },
+            { "slot": "Dinner", "title": "Turkey chilli (batch)", "items": ["200 g turkey mince", "120 g kidney beans", "200 g chopped tomatoes", "200 g potatoes", "chilli powder, cumin"], "how": "Cook 4 portions at once, keep 2 in the fridge for Day 3 lunch.", "kcal": 660, "protein": 58 }
+          ]
+        },
+        {
+          "name": "Day 2",
+          "meals": [
+            { "slot": "Breakfast", "title": "Eggs on toast + skyr", "items": ["3 eggs, scrambled", "2 slices wholemeal bread", "150 g skyr with cinnamon"], "how": "Low heat, take the eggs off while still soft.", "kcal": 520, "protein": 40 },
+            { "slot": "Lunch", "title": "Tuna pasta salad", "items": ["2 cans tuna in water", "70 g pasta (dry)", "80 g sweetcorn", "1 tbsp light mayo", "cucumber"], "how": "Make 2 boxes in the evening.", "kcal": 590, "protein": 55 },
+            { "slot": "Snack", "title": "Protein milkshake + banana", "items": ["330 ml high-protein milkshake", "1 banana"], "how": "Good right after training.", "kcal": 280, "protein": 30 },
+            { "slot": "Dinner", "title": "Chicken fajitas", "items": ["150 g chicken breast", "2 wholemeal wraps", "1 pepper, 1/2 onion", "30 g light cheese", "2 tbsp salsa"], "how": "Hot pan, 8 minutes, fajita spice.", "kcal": 710, "protein": 45 }
+          ]
+        },
+        {
+          "name": "Day 3",
+          "meals": [
+            { "slot": "Breakfast", "title": "Overnight oats", "items": ["50 g oats", "200 g skyr", "150 ml skimmed milk", "1 tbsp peanut butter"], "how": "Jar in the fridge overnight.", "kcal": 480, "protein": 38 },
+            { "slot": "Lunch", "title": "Turkey chilli (from batch)", "items": ["1 portion chilli", "1 slice wholemeal bread"], "how": "Microwave 3 minutes.", "kcal": 600, "protein": 50 },
+            { "slot": "Snack", "title": "Cottage cheese crackers", "items": ["200 g cottage cheese", "4 rice cakes", "cherry tomatoes"], "how": "No cooking.", "kcal": 300, "protein": 28 },
+            { "slot": "Dinner", "title": "Baked cod, potatoes, peas", "items": ["2 frozen cod fillets (250 g)", "300 g potatoes", "150 g frozen peas", "1 tsp oil, lemon"], "how": "Oven 200 C: potatoes 35 min, cod for the last 20.", "kcal": 720, "protein": 54 }
+          ]
+        }
+      ],
+      "shopping": [
+        { "item": "Chicken breast fillets 1 kg", "qty": 1, "price": 5.99, "section": "Meat & fish" },
+        { "item": "Turkey breast mince 500 g", "qty": 2, "price": 2.99, "section": "Meat & fish" },
+        { "item": "Tuna chunks in water 145 g", "qty": 4, "price": 0.79, "section": "Meat & fish" },
+        { "item": "Frozen cod fillets 520 g", "qty": 1, "price": 3.79, "section": "Frozen" },
+        { "item": "Frozen berries 500 g", "qty": 1, "price": 1.99, "section": "Frozen" },
+        { "item": "Stir-fry vegetables 600 g", "qty": 1, "price": 1.29, "section": "Frozen" },
+        { "item": "Garden peas 900 g", "qty": 1, "price": 0.99, "section": "Frozen" },
+        { "item": "Greek-style yogurt 0% 1 kg", "qty": 1, "price": 1.89, "section": "Dairy" },
+        { "item": "Skyr 450 g", "qty": 2, "price": 1.29, "section": "Dairy" },
+        { "item": "Cottage cheese 300 g", "qty": 3, "price": 0.99, "section": "Dairy" },
+        { "item": "Eggs, 15 pack", "qty": 1, "price": 3.15, "section": "Dairy" },
+        { "item": "Skimmed milk 2 pints", "qty": 1, "price": 1.25, "section": "Dairy" },
+        { "item": "High-protein milkshake 330 ml", "qty": 3, "price": 1.19, "section": "Dairy" },
+        { "item": "Light cheese 250 g", "qty": 1, "price": 1.79, "section": "Dairy" },
+        { "item": "Potatoes 2 kg", "qty": 1, "price": 1.29, "section": "Fruit & veg" },
+        { "item": "Bananas, 5 pack", "qty": 1, "price": 0.79, "section": "Fruit & veg" },
+        { "item": "Apples, 6 pack", "qty": 1, "price": 1.19, "section": "Fruit & veg" },
+        { "item": "Peppers, 3 pack", "qty": 1, "price": 1.29, "section": "Fruit & veg" },
+        { "item": "Cucumber", "qty": 1, "price": 0.69, "section": "Fruit & veg" },
+        { "item": "Cherry tomatoes 250 g", "qty": 1, "price": 0.89, "section": "Fruit & veg" },
+        { "item": "Onions 1 kg", "qty": 1, "price": 0.79, "section": "Fruit & veg" },
+        { "item": "Porridge oats 1 kg", "qty": 1, "price": 0.89, "section": "Cupboard" },
+        { "item": "Basmati rice 1 kg", "qty": 1, "price": 1.69, "section": "Cupboard" },
+        { "item": "Pasta 500 g", "qty": 1, "price": 0.55, "section": "Cupboard" },
+        { "item": "Kidney beans 400 g", "qty": 2, "price": 0.39, "section": "Cupboard" },
+        { "item": "Chopped tomatoes 400 g", "qty": 2, "price": 0.39, "section": "Cupboard" },
+        { "item": "Sweetcorn 326 g", "qty": 1, "price": 0.55, "section": "Cupboard" },
+        { "item": "Wholemeal wraps, 8 pack", "qty": 1, "price": 1.09, "section": "Bakery" },
+        { "item": "Wholemeal bread 800 g", "qty": 1, "price": 0.79, "section": "Bakery" },
+        { "item": "Rice cakes", "qty": 1, "price": 0.65, "section": "Cupboard" },
+        { "item": "Almonds 200 g", "qty": 1, "price": 1.99, "section": "Cupboard" },
+        { "item": "Salsa dip 300 g", "qty": 1, "price": 0.99, "section": "Cupboard" }
+      ]
+    },
+    {
+      "name": "B",
+      "menus": [
+        {
+          "name": "Day 1",
+          "meals": [
+            { "slot": "Breakfast", "title": "Protein pancakes", "items": ["2 eggs", "40 g oats", "1 banana", "150 g skyr on top"], "how": "Blend eggs, oats and banana, fry 4 small pancakes.", "kcal": 500, "protein": 38 },
+            { "slot": "Lunch", "title": "Chicken couscous salad", "items": ["180 g chicken breast", "70 g couscous (dry)", "cucumber, tomato", "30 g light feta"], "how": "Pour boiling water on the couscous, 5 minutes, mix everything.", "kcal": 620, "protein": 55 },
+            { "slot": "Snack", "title": "Skyr with berries", "items": ["250 g skyr", "80 g frozen berries", "10 g dark chocolate"], "how": "No cooking.", "kcal": 300, "protein": 25 },
+            { "slot": "Dinner", "title": "Beef noodle stir-fry", "items": ["180 g lean beef strips", "75 g rice noodles", "200 g frozen stir-fry veg", "1 tbsp soy, ginger"], "how": "Very hot pan, beef first, 6 minutes total.", "kcal": 680, "protein": 52 }
+          ]
+        },
+        {
+          "name": "Day 2",
+          "meals": [
+            { "slot": "Breakfast", "title": "Eggs and beans", "items": ["3 eggs", "1/2 can baked beans", "1 slice wholemeal bread"], "how": "Fried in a dry non-stick pan.", "kcal": 520, "protein": 34 },
+            { "slot": "Lunch", "title": "Jacket potato with tuna", "items": ["300 g potato", "1 can tuna in water", "60 g sweetcorn", "30 g light cheese"], "how": "Microwave the potato 8-10 minutes.", "kcal": 560, "protein": 45 },
+            { "slot": "Snack", "title": "Protein milkshake + apple", "items": ["330 ml high-protein milkshake", "1 apple", "15 g almonds"], "how": "No cooking.", "kcal": 330, "protein": 30 },
+            { "slot": "Dinner", "title": "Chicken curry (batch)", "items": ["200 g chicken breast", "1 tbsp curry paste", "100 ml light coconut milk", "75 g rice (dry)", "handful of spinach"], "how": "Cook 4 portions, keep 2 for Day 3 lunch.", "kcal": 690, "protein": 61 }
+          ]
+        },
+        {
+          "name": "Day 3",
+          "meals": [
+            { "slot": "Breakfast", "title": "Greek yogurt bowl", "items": ["300 g Greek-style yogurt 0%", "40 g oats", "100 g frozen berries", "1 tsp honey"], "how": "Mix the night before.", "kcal": 470, "protein": 36 },
+            { "slot": "Lunch", "title": "Chicken curry (from batch)", "items": ["1 portion curry with rice"], "how": "Microwave 3 minutes.", "kcal": 600, "protein": 50 },
+            { "slot": "Snack", "title": "Cottage cheese crackers", "items": ["200 g cottage cheese", "4 rice cakes", "cucumber"], "how": "No cooking.", "kcal": 300, "protein": 28 },
+            { "slot": "Dinner", "title": "Salmon traybake", "items": ["1 salmon fillet (120 g)", "100 g frozen cod", "250 g sweet potato", "200 g broccoli"], "how": "Oven 200 C, sweet potato 25 min, fish and broccoli 15 more.", "kcal": 730, "protein": 56 }
+          ]
+        }
+      ],
+      "shopping": [
+        { "item": "Chicken breast fillets 1 kg", "qty": 2, "price": 5.99, "section": "Meat & fish" },
+        { "item": "Lean beef strips 400 g", "qty": 1, "price": 3.99, "section": "Meat & fish" },
+        { "item": "Salmon fillets, 2 pack", "qty": 1, "price": 3.49, "section": "Meat & fish" },
+        { "item": "Tuna chunks in water 145 g", "qty": 2, "price": 0.79, "section": "Meat & fish" },
+        { "item": "Frozen cod fillets 520 g", "qty": 1, "price": 3.79, "section": "Frozen" },
+        { "item": "Frozen berries 500 g", "qty": 1, "price": 1.99, "section": "Frozen" },
+        { "item": "Stir-fry vegetables 600 g", "qty": 1, "price": 1.29, "section": "Frozen" },
+        { "item": "Greek-style yogurt 0% 1 kg", "qty": 1, "price": 1.89, "section": "Dairy" },
+        { "item": "Skyr 450 g", "qty": 3, "price": 1.29, "section": "Dairy" },
+        { "item": "Cottage cheese 300 g", "qty": 2, "price": 0.99, "section": "Dairy" },
+        { "item": "Eggs, 15 pack", "qty": 1, "price": 3.15, "section": "Dairy" },
+        { "item": "High-protein milkshake 330 ml", "qty": 2, "price": 1.19, "section": "Dairy" },
+        { "item": "Light feta 200 g", "qty": 1, "price": 1.39, "section": "Dairy" },
+        { "item": "Bananas, 5 pack", "qty": 1, "price": 0.79, "section": "Fruit & veg" },
+        { "item": "Apples, 6 pack", "qty": 1, "price": 1.19, "section": "Fruit & veg" },
+        { "item": "Sweet potatoes 1 kg", "qty": 1, "price": 1.25, "section": "Fruit & veg" },
+        { "item": "Broccoli", "qty": 2, "price": 0.69, "section": "Fruit & veg" },
+        { "item": "Baby spinach 240 g", "qty": 1, "price": 1.25, "section": "Fruit & veg" },
+        { "item": "Baking potatoes, 4 pack", "qty": 1, "price": 0.99, "section": "Fruit & veg" },
+        { "item": "Cucumber", "qty": 1, "price": 0.69, "section": "Fruit & veg" },
+        { "item": "Couscous 500 g", "qty": 1, "price": 0.85, "section": "Cupboard" },
+        { "item": "Rice noodles 400 g", "qty": 1, "price": 1.29, "section": "Cupboard" },
+        { "item": "Baked beans 400 g", "qty": 1, "price": 0.35, "section": "Cupboard" },
+        { "item": "Light coconut milk 400 ml", "qty": 1, "price": 0.99, "section": "Cupboard" },
+        { "item": "Curry paste 290 g", "qty": 1, "price": 1.19, "section": "Cupboard" },
+        { "item": "Dark chocolate 85% 100 g", "qty": 1, "price": 1.09, "section": "Cupboard" }
+      ]
+    }
+  ]
+}
