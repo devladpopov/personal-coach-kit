@@ -90,7 +90,13 @@ const Q = {
 };
 
 async function init() {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  // Piped answers (node coach.mjs init < answers.txt) are read up front: readline drops lines that arrive before a question.
+  let rl;
+  if (process.stdin.isTTY) rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  else {
+    const lines = fs.readFileSync(0, 'utf8').split(/\r?\n/);
+    rl = { question: async q => { const a = lines.length ? lines.shift() : ''; process.stdout.write(q + a + '\n'); return a; }, close() {} };
+  }
   const file = path.join(DATA, 'profile.json');
   if (fs.existsSync(file)) {
     const a = (await rl.question('data/profile.json exists. Overwrite? (y/N) ')).trim().toLowerCase();
