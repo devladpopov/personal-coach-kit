@@ -37,19 +37,28 @@ Want to look around first? `node coach.mjs demo && node coach.mjs serve` loads t
 
 ```
 Questionnaire  goals, body stats, days and minutes, equipment, injuries,
-               food likes and allergies, your store and weekly budget
+               foods you love and hate, cooking time, kitchen,
+               nearest stores found on the map, shopping days, budget
 Program        7-day split for N weeks, phases, progression rule,
                technique cues, swaps for injuries, warm-up and cool-down
-Meal plan      calorie and protein targets, A/B weeks x 3 daily menus,
-               shopping list for your store with prices, supplements
+Meal plan      calorie and protein targets, A/B weeks x 7 days, meal times,
+               step-by-step recipes, 2-3 options for every meal that use
+               the same groceries, shopping list per trip with prices
 Tracker        log reps and weight per set, "last time" hints,
                auto rest timer with beeps, full-screen interval timer,
                week view, shopping checklist, weight/fat/waist chart,
                EN/RU, dark/light, works offline-ish on a phone
 Telegram bot   morning plan + menu, reminder before training,
-               evening "did you train?", Saturday shopping list,
+               evening "did you train?", list on shopping days,
+               optional reminder before each meal with the recipe,
                Sunday weigh-in, /done /skip /weight /stats /pause
 ```
+
+## Food: the other half
+
+Training without the right food is money down the drain, so the meal plan gets as much attention as the program. The questionnaire asks what you love and what you never eat, how long you are ready to cook, what is in your kitchen and when you shop. `node coach.mjs stores` finds supermarkets near your address (or roughly by IP) on OpenStreetMap, no key needed, and you pick the one you actually go to.
+
+The plan is built from that store's products and your budget: two alternating weeks, 7 days each, with meal times and step-by-step recipes. Every meal has 2-3 options with the same calories and protein that use the same shopping list, so in the tracker you tap "Swap for" and nothing else needs buying. The shopping list is split by your shopping days.
 
 ## Plug in your AI
 
@@ -83,7 +92,7 @@ Your log (sets, weights, measurements, shopping ticks) is stored in the browser'
 ## Telegram bot (optional)
 
 1. Create a bot with [@BotFather](https://t.me/BotFather), put `BOT_TOKEN` into `.env`.
-2. Optionally set `ALLOWED_USERS=your_username` (otherwise the first person to send `/start` becomes the owner) and `TRACKER_URL` (your deployed site, adds an "Open tracker" button).
+2. Optionally set `ALLOWED_USERS=your_username` (otherwise the first person to send `/start` becomes the owner), `TRACKER_URL` (your deployed site, adds an "Open tracker" button) and `MEAL_REMINDERS=1` (a message before every meal with the recipe, timed by the cooking time).
 3. `node coach.mjs phrases` makes your AI write the bot's messages in your coach's personality (the default phrases are in `bot/phrases.en.json` and `bot/phrases.ru.json`).
 4. `node coach.mjs bot`. It uses long polling, so it runs on a laptop, a Raspberry Pi or a $4 VPS without a public address. Keep it alive with `pm2 start coach.mjs -- bot` or a systemd unit.
 
@@ -92,7 +101,9 @@ Set `START_DATE` to the tracker start date so the bot counts the same weeks. Rem
 ## Files
 
 ```
-coach.mjs              CLI: init, generate, prompt, import, phrases, demo, serve, build, bot
+coach.mjs              CLI: init, stores, generate, prompt, import, check, phrases, demo, serve, build, bot
+CLAUDE.md, AGENTS.md   instructions for AI agents (Claude Code, Codex, Cursor)
+.claude/skills/coach   the full setup and coaching script for an agent
 prompts/coach.md       the coach's brain: method, safety rules, JSON format
 prompts/bot-phrases.md personality of the Telegram bot
 app/                   the tracker (index.html, app.js, style.css), no build step

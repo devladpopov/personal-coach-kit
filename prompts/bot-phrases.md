@@ -11,7 +11,7 @@ Return ONE JSON object and nothing else, with these keys. Every value is an arra
 - `check` (4): evening question "did you train?"
 - `done` (6): reaction to a finished workout
 - `skipped` (4): reaction to a skipped workout, supportive
-- `shop` (3): Saturday shopping reminder
+- `shop` (3): shopping-day reminder (the list follows the message)
 - `weigh` (3): Sunday weigh-in reminder, must mention the command `/weight 82.4`
 
 Placeholders you can use, they are replaced by the bot: `{name}`, `{workout}` (today's session name), `{time}` (workout time), `{week}`, `{weeks}`, `{streak}`, `{kcal}`, `{protein}`.

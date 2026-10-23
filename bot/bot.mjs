@@ -1,7 +1,8 @@
 // Optional Telegram coach bot. Node 18+, no dependencies, long polling (no server or webhook needed).
 // Reads data/profile.json, data/program.json, data/meals.json and the phrases file.
 // Env: BOT_TOKEN (from @BotFather), ALLOWED_USERS (Telegram usernames or ids, comma separated;
-// empty = the first person who sends /start becomes the owner), TRACKER_URL (your deployed site, optional).
+// empty = the first person who sends /start becomes the owner), TRACKER_URL (your deployed site, optional),
+// MEAL_REMINDERS=1 (a message before each meal with the recipe, timed by meals.slots and prep_min).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -49,10 +50,20 @@ if (process.env.START_DATE) db.start = mondayOf(process.env.START_DATE);
 if (!db.start) { db.start = mondayOf(now().date); saveDb(); }
 const weekNo = d => Math.floor(daysBetween(db.start, d) / 7) + 1;
 const planFor = dow => PROGRAM.days.find(d => d.dow === dow) || { rest: true, name: 'Rest' };
+// Meal plan: recipes per week + 7 days of recipe ids. Old files with rotating "menus" are converted.
+for (const w of MEALS.weeks) if (!w.recipes) {
+  w.recipes = []; w.days = [];
+  w.menus.forEach((mn, i) => w.days.push({ name: mn.name, meals: mn.meals.map((x, k) => { const id = `m${i}-${k}`; w.recipes.push({ ...x, id }); return id; }) }));
+}
+const dowOf = d => ((new Date(utc(d)).getUTCDay() + 6) % 7) + 1;
 function menuFor(date) {
   const W = MEALS.weeks[(Math.max(weekNo(date), 1) - 1) % MEALS.weeks.length];
-  return { week: W, menu: W.menus[Math.max(daysBetween(db.start, date), 0) % W.menus.length] };
+  const day = W.days.length === 7 && W.days[0].dow ? W.days[dowOf(date) - 1] : W.days[Math.max(daysBetween(db.start, date), 0) % W.days.length];
+  const byId = Object.fromEntries(W.recipes.map(r => [r.id, r]));
+  return { week: W, menu: { name: day.name || '', meals: day.meals.map(id => byId[id]).filter(Boolean) } };
 }
+const slotTime = slot => ((MEALS.slots || []).find(x => x.name === slot) || {}).time;
+const SHOP_DAYS = MEALS.shop_days || PROFILE.shop_days || [6];
 function streak(today) {
   let n = 0;
   for (let d = addDays(today, -1), i = 0; i < 120; i++, d = addDays(d, -1)) {
@@ -75,8 +86,8 @@ function vars(date) {
   return { name: PROFILE.name || '', workout: plan.name, week: weekNo(date), weeks: PROGRAM.weeks, streak: streak(date), kcal: MEALS.targets.kcal, protein: MEALS.targets.protein, time: SCHED.workout };
 }
 const L = LANG === 'ru'
-  ? { today: 'Сегодня', menu: 'Меню', done: 'Сделал', skip: 'Сегодня пропускаю', open: 'Открыть трекер', week: 'неделя', streak: 'серия', paused: 'Пауза до', help: 'Команды: /today /food /shop /done /skip /weight 82.4 /stats /pause 3 /resume', saved: 'Записал', rest: 'Отдых', total: 'Итого' }
-  : { today: 'Today', menu: 'Menu', done: 'Done', skip: 'Skipping today', open: 'Open tracker', week: 'week', streak: 'streak', paused: 'Paused until', help: 'Commands: /today /food /shop /done /skip /weight 82.4 /stats /pause 3 /resume', saved: 'Saved', rest: 'Rest', total: 'Total' };
+  ? { today: 'Сегодня', menu: 'Меню', done: 'Сделал', skip: 'Сегодня пропускаю', open: 'Открыть трекер', week: 'неделя', streak: 'серия', paused: 'Пауза до', help: 'Команды: /today /food /shop /done /skip /weight 82.4 /stats /pause 3 /resume', saved: 'Записал', rest: 'Отдых', total: 'Итого', trip: 'поход' }
+  : { today: 'Today', menu: 'Menu', done: 'Done', skip: 'Skipping today', open: 'Open tracker', week: 'week', streak: 'streak', paused: 'Paused until', help: 'Commands: /today /food /shop /done /skip /weight 82.4 /stats /pause 3 /resume', saved: 'Saved', rest: 'Rest', total: 'Total', trip: 'trip' };
 
 function todayText(date) {
   const n = now(), plan = planFor(n.dow);
@@ -85,13 +96,21 @@ function todayText(date) {
 }
 function foodText(date) {
   const { week, menu } = menuFor(date);
-  return `${L.menu} (${week.name}, ${menu.name}):\n` + menu.meals.map(m => `• ${m.slot}: ${m.title} (${m.kcal} kcal, ${m.protein} g)`).join('\n');
+  return `${L.menu} (${week.name}${menu.name ? ', ' + menu.name : ''}):\n` + menu.meals.map(m => `• ${slotTime(m.slot) ? slotTime(m.slot) + ' ' : ''}${m.slot}: ${m.title} (${m.kcal} kcal, ${m.protein} g)`).join('\n');
 }
-function shopText(date) {
+// trip: 1-based index in shop_days; without trips in the list everything is bought at once.
+function shopText(date, trip) {
   const { week } = menuFor(date), c = MEALS.currency || '';
-  const total = week.shopping.reduce((a, x) => a + x.price * (x.qty || 1), 0);
-  return `${MEALS.store}, ${week.name}:\n` + week.shopping.map(x => `• ${x.item}${x.qty > 1 ? ' × ' + x.qty : ''}`).join('\n') + `\n${L.total}: ${c}${total.toFixed(2)}`;
+  const list = week.shopping.filter(x => !trip || (x.trip || 1) === trip);
+  const total = list.reduce((a, x) => a + x.price * (x.qty || 1), 0);
+  return `${MEALS.store}, ${week.name}${trip ? ', ' + L.trip + ' ' + trip : ''}:\n` + list.map(x => `• ${x.item}${x.qty > 1 ? ' × ' + x.qty : ''}${x.note ? ' (' + x.note + ')' : ''}`).join('\n') + `\n${L.total}: ${c}${total.toFixed(2)}`;
 }
+function mealText(m) {
+  const steps = Array.isArray(m.how) ? m.how.map((x, i) => `${i + 1}. ${x}`).join('\n') : (m.how || '');
+  return `${slotTime(m.slot) || ''} ${m.slot}: ${m.title}\n${m.items.map(x => '• ' + x).join('\n')}${steps ? '\n\n' + steps : ''}\n${m.kcal} kcal, ${m.protein} g`.trim();
+}
+// The week a shopping trip is for: on Sat/Sun shop for the coming week.
+const shopWeekDate = d => dowOf(d) >= 6 ? addDays(d, 8 - dowOf(d)) : d;
 
 // ---------- telegram ----------
 async function tg(method, body) {
@@ -110,13 +129,18 @@ const SLOTS = [
   { key: 'morning', at: () => toMin(SCHED.wake) + 15, when: () => true, text: d => fill(pick(planFor(now().dow).rest ? 'morning_rest' : 'morning_train'), vars(d)) + '\n\n' + foodText(d), kb: () => kbTracker },
   { key: 'workout', at: () => toMin(SCHED.workout) - 30, when: d => !planFor(now().dow).rest && !db.done[d], text: d => fill(pick('workout'), vars(d)) + '\n\n' + todayText(d), kb: () => kbTracker },
   { key: 'check', at: () => toMin(SCHED.workout) + 150, when: d => !planFor(now().dow).rest && !db.done[d] && !db.skipped[d], text: d => fill(pick('check'), vars(d)), kb: () => kbCheck },
-  { key: 'shop', at: () => toMin(SCHED.wake) + 120, when: () => now().dow === 6, text: d => fill(pick('shop'), vars(d)) + '\n\n' + shopText(addDays(d, 2)), kb: () => undefined },
+  { key: 'shop', at: () => toMin(SCHED.wake) + 120, when: () => SHOP_DAYS.includes(now().dow), text: d => fill(pick('shop'), vars(d)) + '\n\n' + shopText(shopWeekDate(d), SHOP_DAYS.length > 1 ? SHOP_DAYS.indexOf(now().dow) + 1 : 0), kb: () => undefined },
   { key: 'weigh', at: () => toMin(SCHED.wake) + 5, when: () => now().dow === 7, text: d => fill(pick('weigh'), vars(d)), kb: () => undefined }
 ];
+// Optional: one message per meal, prep_min (at least 10) minutes before its time, with the recipe.
+function mealSlots(date) {
+  if (process.env.MEAL_REMINDERS !== '1') return [];
+  return menuFor(date).menu.meals.map((m, k) => slotTime(m.slot) && { key: 'meal' + k, at: () => toMin(slotTime(m.slot)) - Math.max(m.prep_min || 0, 10), when: () => true, text: () => mealText(m), kb: () => undefined }).filter(Boolean);
+}
 async function tick() {
   const n = now();
   if (db.pauseUntil && n.date <= db.pauseUntil) return;
-  for (const s of SLOTS) {
+  for (const s of SLOTS.concat(mealSlots(n.date))) {
     const id = `${n.date}:${s.key}`, at = s.at();
     if (db.sent[id] || n.min < at || n.min > at + 30 || !s.when(n.date)) continue;
     db.sent[id] = 1; saveDb();

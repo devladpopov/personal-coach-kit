@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // personal-coach-kit CLI. Node 18+, no dependencies.
 //   node coach.mjs init        questionnaire -> data/profile.json
+//   node coach.mjs stores      supermarkets near you (--near "city or postcode", default: by IP) from OpenStreetMap
 //   node coach.mjs generate    profile + prompts/coach.md -> your AI -> data/program.json, data/meals.json
 //   node coach.mjs prompt      write the full prompt to data/prompt.txt (paste it into any chat)
 //   node coach.mjs import F    take the AI answer saved in file F and split it into data/*.json
-//   node coach.mjs check       validate data/profile.json, data/program.json, data/meals.json (after you or an agent edit them)
+//   node coach.mjs check       validate data/profile.json, program.json, meals.json after edits (--dir another folder)
 //   node coach.mjs demo        load the fictional demo profile into data/
 //   node coach.mjs serve       open the tracker on http://localhost:8080
 //   node coach.mjs build       static site in dist/ (Cloudflare Pages, GitHub Pages, any hosting)
@@ -50,10 +51,17 @@ const Q = {
     ['equipment', 'Equipment you have, comma separated (e.g. dumbbells 2-20 kg, pull-up bar, gym membership)', 'list'],
     ['injuries', 'Injuries, pain, limitations (Enter if none)', null, ''],
     ['activity', 'Daily activity (desk job, steps, sports)'],
-    ['diet', 'Food preferences and dislikes (vegetarian, no fish, ...)', null, 'eats everything'],
+    ['diet', 'Diet type or restrictions (vegetarian, halal, no lactose, ...)', null, 'none'],
     ['allergies', 'Allergies or intolerances (Enter if none)', null, ''],
-    ['meals_per_day', 'Meals per day', 'num', '4'],
-    ['store', 'The store you actually shop at (e.g. Lidl, Tesco, Walmart, Pyaterochka)'],
+    ['foods_love', 'Foods you love and would happily eat often, comma separated', 'list'],
+    ['foods_dislike', 'Foods you do not eat or dislike, comma separated (Enter if none)', 'list', ''],
+    ['meals_per_day', 'Meals per day, snacks included', 'num', '4'],
+    ['meal_times', 'Usual meal times, comma separated (e.g. 08:00, 13:00, 16:30, 19:30), Enter = auto', 'list', ''],
+    ['cook_minutes', 'Minutes you are ready to cook on a weekday', 'num', '20'],
+    ['kitchen', 'Kitchen equipment, comma separated', 'list', 'stove, oven, microwave'],
+    ['location', 'City or postcode, to find stores near you (Enter = detect by IP, "-" = skip)', null, ''],
+    ['store', 'The store you actually shop at (number from the list or a name)'],
+    ['shop_days', 'Shopping days, Monday = 1 (e.g. 1,4)', 'dows', '6'],
     ['budget_week', 'Food budget per week (number)', 'num'],
     ['currency', 'Currency symbol', null, '£'],
     ['wake', 'Wake-up time (HH:MM)', null, '07:00'],
@@ -77,10 +85,17 @@ const Q = {
     ['equipment', 'Инвентарь через запятую (гантели 2-20 кг, турник, абонемент в зал)', 'list'],
     ['injuries', 'Травмы, боли, ограничения (Enter, если нет)', null, ''],
     ['activity', 'Активность в течение дня (сидячая работа, шаги, спорт)'],
-    ['diet', 'Предпочтения в еде (вегетарианец, не ем рыбу, ...)', null, 'ем всё'],
+    ['diet', 'Тип питания или ограничения (вегетарианец, халяль, без лактозы, ...)', null, 'нет'],
     ['allergies', 'Аллергии и непереносимости (Enter, если нет)', null, ''],
-    ['meals_per_day', 'Приёмов пищи в день', 'num', '4'],
-    ['store', 'Магазин, где вы реально покупаете продукты (Пятёрочка, ВкусВилл, Lidl, ...)'],
+    ['foods_love', 'Что любите и готовы есть часто, через запятую', 'list'],
+    ['foods_dislike', 'Что не едите или не любите, через запятую (Enter, если такого нет)', 'list', ''],
+    ['meals_per_day', 'Приёмов пищи в день вместе с перекусами', 'num', '4'],
+    ['meal_times', 'Обычное время еды через запятую (например, 08:00, 13:00, 16:30, 19:30), Enter = подобрать', 'list', ''],
+    ['cook_minutes', 'Сколько минут готовы готовить в будний день', 'num', '20'],
+    ['kitchen', 'Техника на кухне через запятую', 'list', 'плита, духовка, микроволновка'],
+    ['location', 'Город или адрес, чтобы найти магазины рядом (Enter = определить по IP, «-» = пропустить)', null, ''],
+    ['store', 'Магазин, где вы покупаете продукты (номер из списка или название)'],
+    ['shop_days', 'Дни покупок, понедельник = 1 (например, 1,4)', 'dows', '6'],
     ['budget_week', 'Бюджет на еду в неделю (число)', 'num'],
     ['currency', 'Символ валюты', null, '₽'],
     ['wake', 'Во сколько встаёте (ЧЧ:ММ)', null, '07:00'],
@@ -107,7 +122,11 @@ async function init() {
   let language = (await rl.question('Language / Язык (en, ru) [en]: ')).trim().toLowerCase() || 'en';
   if (!Q[language]) language = 'en';
   const prof = { language };
+  let stores = [];
   for (const [key, q, kind, def] of Q[language]) {
+    if (key === 'store' && prof.location !== '-') {
+      try { stores = await findStores(prof.location || null); printStores(stores, language); } catch (e) { console.log('  (store search failed: ' + e.message + ')'); }
+    }
     let v;
     for (;;) {
       v = (await rl.question(`${q}${def !== undefined && def !== '' ? ` [${def}]` : ''}: `)).trim();
@@ -119,6 +138,8 @@ async function init() {
     }
     if (kind === 'num' || kind === 'num?') v = v === null ? null : parseFloat(String(v).replace(',', '.'));
     if (kind === 'list') v = v.split(',').map(s => s.trim()).filter(Boolean);
+    if (kind === 'dows') v = v.split(/[ ,]+/).map(Number).filter(x => x >= 1 && x <= 7);
+    if (key === 'store' && /^\d+$/.test(v) && stores[+v - 1]) { const st = stores[+v - 1]; v = st.name; prof.store_address = st.address; }
     if (kind === 'days') {
       const n = v.split(/[ ,]+/).map(Number).filter(x => x >= 1 && x <= 7);
       v = n.length === 1 && !v.includes(',') ? { 1: [3], 2: [2, 5], 3: [1, 3, 5], 4: [1, 2, 4, 6], 5: [1, 2, 3, 5, 6], 6: [1, 2, 3, 4, 5, 6], 7: [1, 2, 3, 4, 5, 6, 7] }[n[0]] : n;
@@ -127,12 +148,60 @@ async function init() {
   }
   rl.close();
   prof.schedule = { wake: prof.wake, workout: prof.workout, sleep: prof.sleep };
+  if (prof.location === '-') prof.location = '';
   prof.program = { weeks: prof.weeks };
   delete prof.wake; delete prof.workout; delete prof.sleep; delete prof.weeks;
   prof.units = 'metric';
   prof.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   writeJSON(file, prof);
   console.log(`\nSaved ${path.relative(ROOT, file)}.\nNext: node coach.mjs generate   (or: node coach.mjs prompt, to paste it into any chat)`);
+}
+
+// ---------------- stores near you (OpenStreetMap, no key) ----------------
+const UA = { 'user-agent': 'personal-coach-kit (https://github.com/devladpopov/personal-coach-kit)' };
+async function locate(near) {
+  if (near) {
+    // "Jennifer Ave, Liverpool L5" may be too specific: drop the first part until something is found.
+    for (let parts = near.split(','); parts.length; parts = parts.slice(1)) {
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(parts.join(',').trim()), { headers: UA });
+      const j = await r.json();
+      if (j.length) return { lat: +j[0].lat, lon: +j[0].lon, label: j[0].display_name };
+    }
+    throw new Error('place not found: ' + near);
+  }
+  const r = await fetch('https://ipwho.is/'); const j = await r.json();
+  if (!j.success) throw new Error('could not detect location by IP, use --near "city or postcode"');
+  return { lat: j.latitude, lon: j.longitude, label: `${j.city}, ${j.country} (by IP, approximate)` };
+}
+async function findStores(near, radius = 2500) {
+  const loc = await locate(near);
+  const q = `[out:json][timeout:25];nwr["shop"~"^(supermarket|convenience|greengrocer|butcher|discount)$"](around:${radius},${loc.lat},${loc.lon});out center tags;`;
+  const r = await fetch('https://overpass-api.de/api/interpreter', { method: 'POST', headers: { ...UA, 'content-type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) });
+  if (!r.ok) throw new Error('OpenStreetMap search is busy, try again in a minute');
+  const j = await r.json();
+  const km = (a, b) => { const d = x => x * Math.PI / 180, dl = d(b.lat - a.lat), dn = d(b.lon - a.lon); return 2 * 6371 * Math.asin(Math.sqrt(Math.sin(dl / 2) ** 2 + Math.cos(d(a.lat)) * Math.cos(d(b.lat)) * Math.sin(dn / 2) ** 2)); };
+  const rank = { supermarket: 0, discount: 0, greengrocer: 1, butcher: 1, convenience: 2 };
+  const seen = new Set();
+  const list = j.elements.map(e => {
+    const t = e.tags || {}, c = e.center || e;
+    const name = t.brand || t.name; if (!name) return null;
+    const address = [t['addr:street'] && [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(' '), t['addr:city'] || t['addr:postcode']].filter(Boolean).join(', ');
+    return { name, branch: t.name && t.name !== name ? t.name : '', type: t.shop, address, km: +km(loc, { lat: c.lat, lon: c.lon }).toFixed(2), website: t.website || t['brand:website'] || '' };
+  }).filter(Boolean).sort((a, b) => (rank[a.type] ?? 3) - (rank[b.type] ?? 3) || a.km - b.km)
+    .filter(s => { const k = s.name.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; });
+  const out = list.slice(0, 12); out.location = loc.label;
+  return out;
+}
+function printStores(list, language) {
+  const ru = language === 'ru';
+  console.log(`\n${ru ? 'Магазины рядом' : 'Stores near'}: ${list.location}`);
+  if (!list.length) console.log(ru ? '  ничего не нашлось, впишите название сами' : '  nothing found, type the name yourself');
+  list.forEach((s, i) => console.log(`  ${i + 1}. ${s.name}${s.branch ? ' (' + s.branch + ')' : ''}, ${s.type}, ${s.km} km${s.address ? ', ' + s.address : ''}`));
+}
+async function stores(args) {
+  const list = await findStores(args.near || null, +(args.radius || 2500));
+  if (args.json) return console.log(JSON.stringify({ location: list.location, stores: list }, null, 1));
+  printStores(list, args.ru ? 'ru' : 'en');
 }
 
 // ---------------- prompt + AI providers ----------------
@@ -149,7 +218,7 @@ const PROVIDERS = {
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model, max_tokens: 16000, messages: [{ role: 'user', content: prompt }] })
+        body: JSON.stringify({ model, max_tokens: 32000, messages: [{ role: 'user', content: prompt }] })
       });
       const j = await r.json(); if (!r.ok) throw new Error(JSON.stringify(j.error || j));
       return j.content.filter(c => c.type === 'text').map(c => c.text).join('');
@@ -173,7 +242,7 @@ const PROVIDERS = {
     async call(prompt, model) {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 16000 } })
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 32000 } })
       });
       const j = await r.json(); if (!r.ok) throw new Error(JSON.stringify(j.error || j));
       return j.candidates[0].content.parts.map(x => x.text).join('');
@@ -232,11 +301,44 @@ function validate(o) {
     if (!ml.targets || !ml.targets.kcal) e.push('meals.targets.kcal missing');
     if (!Array.isArray(ml.weeks) || !ml.weeks.length) e.push('meals.weeks is empty');
     else ml.weeks.forEach((w, i) => {
-      if (!Array.isArray(w.menus) || !w.menus.length) e.push(`meals.weeks[${i}].menus is empty`);
-      if (!Array.isArray(w.shopping)) e.push(`meals.weeks[${i}].shopping missing`);
+      const W = `meals.weeks[${i}]`;
+      if (!Array.isArray(w.shopping) || !w.shopping.length) e.push(`${W}.shopping missing`);
+      else w.shopping.forEach((x, k) => { if (!x.item || typeof x.price !== 'number') e.push(`${W}.shopping[${k}] needs item and a numeric price`); });
+      if (w.menus && !w.recipes) { if (!Array.isArray(w.menus) || !w.menus.length) e.push(`${W}.menus is empty`); return; } // old format
+      if (!Array.isArray(w.recipes) || !w.recipes.length) { e.push(`${W}.recipes is empty`); return; }
+      const ids = new Set(), bySlot = {};
+      w.recipes.forEach((r, k) => {
+        if (!r.id || ids.has(r.id)) e.push(`${W}.recipes[${k}] needs a unique id`);
+        if (!r.slot || !r.title || !Array.isArray(r.items) || !r.items.length || !(r.kcal > 0) || !(r.protein >= 0)) e.push(`${W}.recipes[${k}] (${r.id}) needs slot, title, items, kcal, protein`);
+        ids.add(r.id); (bySlot[r.slot] = bySlot[r.slot] || []).push(r.id);
+      });
+      if (!Array.isArray(w.days) || w.days.length !== 7) e.push(`${W}.days must have 7 entries`);
+      else w.days.forEach((d, k) => {
+        if (d.dow !== k + 1) e.push(`${W}.days[${k}].dow must be ${k + 1}`);
+        if (!Array.isArray(d.meals) || !d.meals.length) e.push(`${W}.days[${k}].meals is empty`);
+        else d.meals.forEach(id => { if (!ids.has(id)) e.push(`${W}.days[${k}] uses unknown recipe "${id}"`); });
+      });
+      for (const [slot, list] of Object.entries(bySlot)) if (list.length < 2) e.push(`${W}: slot "${slot}" has only one recipe, give at least 2 options`);
     });
   }
   return e;
+}
+
+// Soft problems: printed by check, do not block.
+function warnings(o, prof) {
+  const out = [], tg = o.meals.targets;
+  const bad = (prof.foods_dislike || []).concat(prof.allergies ? String(prof.allergies).split(/[,;]/) : []).map(x => x.trim().toLowerCase()).filter(x => x.length > 2);
+  for (const w of o.meals.weeks) {
+    if (!w.recipes) { out.push(`week ${w.name} uses the old "menus" format without meal options; regenerate to get them`); continue; }
+    const byId = Object.fromEntries(w.recipes.map(r => [r.id, r]));
+    w.days.forEach(d => {
+      const k = d.meals.reduce((a, id) => a + (byId[id] ? byId[id].kcal : 0), 0), p = d.meals.reduce((a, id) => a + (byId[id] ? byId[id].protein : 0), 0);
+      if (Math.abs(k - tg.kcal) > tg.kcal * 0.1) out.push(`week ${w.name}, day ${d.dow}: ${k} kcal vs target ${tg.kcal}`);
+      if (p < tg.protein * 0.9) out.push(`week ${w.name}, day ${d.dow}: ${p} g protein vs target ${tg.protein}`);
+    });
+    for (const r of w.recipes) for (const b of bad) if ((r.title + ' ' + r.items.join(' ')).toLowerCase().includes(b)) out.push(`week ${w.name}, recipe ${r.id} mentions "${b}" (disliked or allergy)`);
+  }
+  return out;
 }
 
 function saveResult(o) {
@@ -279,8 +381,8 @@ async function phrases(args) {
 
 // Validate the files in data/ in place: used by AI agents that write program.json and meals.json themselves.
 const PROFILE_KEYS = ['language', 'name', 'sex', 'age', 'height_cm', 'weight_kg', 'goal', 'training_days', 'session_minutes', 'equipment', 'store', 'budget_week', 'currency'];
-function check() {
-  const f = n => path.join(DATA, n);
+function check(args = {}) {
+  const dir = args.dir ? path.resolve(args.dir) : DATA, f = n => path.join(dir, n);
   const errs = [];
   if (!fs.existsSync(f('profile.json'))) errs.push('data/profile.json is missing');
   else {
@@ -304,6 +406,7 @@ function check() {
   const prof = readJSON(f('profile.json'));
   const train = o.program.days.filter(d => !d.rest).length;
   console.log(`OK: ${o.program.title}, ${o.program.weeks} weeks, ${train} training days; ${o.meals.targets.kcal} kcal, ${o.meals.targets.protein} g protein.`);
+  for (const w of warnings(o, prof)) console.log('Warning: ' + w);
   for (const w of o.meals.weeks) {
     const total = w.shopping.reduce((a, x) => a + (+x.price || 0) * (x.qty || 1), 0);
     console.log(`Week ${w.name} shopping: ${total.toFixed(2)} ${prof.currency || ''}${prof.budget_week && total > prof.budget_week * 1.1 ? `  OVER BUDGET (${prof.budget_week})` : ''}`);
@@ -381,7 +484,7 @@ for (let i = 0; i < rest.length; i++) {
 }
 fs.mkdirSync(DATA, { recursive: true });
 const cmds = {
-  init, generate: () => generate(args), phrases: () => phrases(args), import: () => importAnswer(pos[0]), check, demo: () => demo(args),
+  init, generate: () => generate(args), phrases: () => phrases(args), import: () => importAnswer(pos[0]), check: () => check(args), stores: () => stores(args), demo: () => demo(args),
   prompt: () => { const f = path.join(DATA, 'prompt.txt'); fs.writeFileSync(f, buildPrompt()); console.log(`Prompt saved to ${path.relative(ROOT, f)}. Paste it into Claude, ChatGPT, Gemini or a local model, save the answer to a file and run: node coach.mjs import <file>`); },
   serve: () => serve(args), build: () => build(args), bot
 };

@@ -16,6 +16,7 @@ const I18N = {
     beforeStart: 'Program starts on', phase: 'Phase', progression: 'Progression rule',
     targets: 'Daily targets', protein: 'protein', water: 'water', menu: 'Menu', shopping: 'Shopping list',
     total: 'Total', left: 'left to buy', supplements: 'Supplements', rules: 'Rules', weekLabel: 'Week',
+    options: 'Swap for', original: 'back to plan', min: 'min', trip: 'Trip', dayTotal: 'Day total', where: 'where',
     auto: 'auto', addEntry: 'Add measurement', date: 'Date', fat: 'Fat %', waist: 'Waist cm', add: 'Add',
     history: 'Workout history', noHistory: 'No workouts logged yet.', startDate: 'Program start date',
     backup: 'Backup', exportBtn: 'Export JSON', importBtn: 'Import JSON', reset: 'Reset all data',
@@ -36,6 +37,7 @@ const I18N = {
     beforeStart: 'Программа начнётся', phase: 'Фаза', progression: 'Правило прогрессии',
     targets: 'Цели на день', protein: 'белок', water: 'вода', menu: 'Меню', shopping: 'Список покупок',
     total: 'Итого', left: 'осталось купить', supplements: 'Добавки', rules: 'Правила', weekLabel: 'Неделя',
+    options: 'Заменить на', original: 'вернуть как в плане', min: 'мин', trip: 'Поход', dayTotal: 'За день', where: 'где',
     auto: 'авто', addEntry: 'Добавить замер', date: 'Дата', fat: 'Жир %', waist: 'Талия, см', add: 'Добавить',
     history: 'История тренировок', noHistory: 'Пока нет записанных тренировок.', startDate: 'Дата старта программы',
     backup: 'Резервная копия', exportBtn: 'Скачать JSON', importBtn: 'Загрузить JSON', reset: 'Стереть все данные',
@@ -63,7 +65,7 @@ const mondayOf = s => addDays(s, 1 - dow(s));
 const fmtDate = s => parse(s).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 
 // ---------- state ----------
-function blankState() { return { v: 1, start: mondayOf(todayIso()), logs: {}, body: [], shop: {}, foodWeek: null, theme: null, lang: null }; }
+function blankState() { return { v: 1, start: mondayOf(todayIso()), logs: {}, body: [], shop: {}, pick: {}, foodWeek: null, theme: null, lang: null }; }
 function load() {
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v) return Object.assign(blankState(), s); } catch (e) {}
   return null;
@@ -329,44 +331,76 @@ function bindWeek() {
 }
 
 // ---------- food view ----------
-let menuShown = null;
+// Meal plan: each week has a pool of recipes per slot and 7 days that pick one recipe per slot.
+// Any meal can be swapped for another recipe of the same slot (same shopping list). Old "menus" files are converted.
+function normMeals(m) {
+  for (const w of m.weeks) {
+    if (w.recipes) continue;
+    w.recipes = []; w.days = [];
+    w.menus.forEach((mn, i) => w.days.push({ name: mn.name, meals: mn.meals.map((x, k) => { const id = `m${i}-${k}`; w.recipes.push({ ...x, id }); return id; }) }));
+  }
+  return m;
+}
+let dayShown = null;
 function foodWeekIdx() {
   if (S.foodWeek !== null && S.foodWeek !== undefined) return S.foodWeek;
   return (Math.max(weekOf(todayIso()), 1) - 1) % M.weeks.length;
 }
+const todayFoodIdx = W => W.days.length === 7 && W.days[0].dow ? dow(todayIso()) - 1 : Math.max(diff(S.start, todayIso()), 0) % W.days.length;
+const pickKey = (W, di, k) => `${W.name}:${di}:${k}`;
+function dayMeals(W, di) {
+  const byId = Object.fromEntries(W.recipes.map(r => [r.id, r]));
+  return W.days[di].meals.map((id, k) => { const chosen = (S.pick || {})[pickKey(W, di, k)]; return { k, plan: byId[id], r: byId[chosen] || byId[id] }; }).filter(x => x.r);
+}
+function slotTime(slot) { const s = (M.slots || []).find(x => x.name === slot); return s && s.time; }
 function renderFood() {
   const wi = foodWeekIdx(), W = M.weeks[wi], cur = M.currency || '';
-  if (menuShown === null || menuShown >= W.menus.length) menuShown = Math.max(diff(S.start, todayIso()), 0) % W.menus.length;
+  if (dayShown === null || dayShown >= W.days.length) dayShown = todayFoodIdx(W);
   const tg = M.targets || {};
   let h = `<div class="card"><h2>${t('targets')}</h2><div class="muted">${tg.kcal} kcal · ${tg.protein} g ${t('protein')} · F ${tg.fat} g · C ${tg.carbs} g · ${t('water')} ${tg.water_l} L</div></div>`;
   h += `<div class="card"><div class="weeknav"><div class="seg">${M.weeks.map((x, i) => `<button data-fw="${i}" class="${i === wi ? 'on' : ''}">${t('weekLabel')} ${esc(x.name)}</button>`).join('')}<button data-fw="auto" class="${S.foodWeek === null ? 'on' : ''}">${t('auto')}</button></div></div>`;
-  h += `<div class="seg" style="margin-bottom:8px">${W.menus.map((m, i) => `<button data-menu="${i}" class="${i === menuShown ? 'on' : ''}">${esc(m.name)}</button>`).join('')}</div>`;
-  const menu = W.menus[menuShown];
-  const kcal = menu.meals.reduce((a, m) => a + (m.kcal || 0), 0), prot = menu.meals.reduce((a, m) => a + (m.protein || 0), 0);
-  h += `<div class="muted">${kcal} / ${tg.kcal} kcal</div><div class="bar"><i style="width:${Math.min(100, kcal / tg.kcal * 100)}%"></i></div>`;
-  h += `<div class="muted">${prot} / ${tg.protein} g ${t('protein')}</div><div class="bar"><i style="width:${Math.min(100, prot / tg.protein * 100)}%;background:var(--green)"></i></div>`;
-  menu.meals.forEach(m => {
-    h += `<div class="meal"><div class="slot">${esc(m.slot)}</div><div class="meal-head"><b>${esc(m.title)}</b><span class="macro">${m.kcal} kcal · ${m.protein} g</span></div>
-      <div class="muted">${m.items.map(esc).join(', ')}</div>${m.how ? `<div class="muted" style="font-style:italic">${esc(m.how)}</div>` : ''}</div>`;
+  const dname = (d, i) => d.dow ? t('dayNames')[d.dow - 1] : (d.name || i + 1);
+  h += `<div class="seg wrap" style="margin-bottom:8px">${W.days.map((d, i) => `<button data-fday="${i}" class="${i === dayShown ? 'on' : ''}">${esc(dname(d, i))}</button>`).join('')}</div>`;
+  const meals = dayMeals(W, dayShown);
+  const sum = key => meals.reduce((a, x) => a + (x.r[key] || 0), 0);
+  h += `<div class="muted">${t('dayTotal')}: ${sum('kcal')} / ${tg.kcal} kcal</div><div class="bar"><i style="width:${Math.min(100, sum('kcal') / tg.kcal * 100)}%"></i></div>`;
+  h += `<div class="muted">${sum('protein')} / ${tg.protein} g ${t('protein')}</div><div class="bar"><i style="width:${Math.min(100, sum('protein') / tg.protein * 100)}%;background:var(--green)"></i></div>`;
+  meals.forEach(({ k, plan, r }) => {
+    const time = slotTime(r.slot), steps = Array.isArray(r.how) ? r.how : (r.how ? [r.how] : []);
+    const others = W.recipes.filter(x => x.slot === r.slot && x.id !== r.id);
+    const macro = `${r.kcal} kcal · ${r.protein} g${r.fat !== undefined ? ` · F ${r.fat} · C ${r.carbs}` : ''}`;
+    h += `<div class="meal"><div class="slot">${esc(r.slot)}${time ? ' · ' + esc(time) : ''}${r.prep_min ? ` · ${r.prep_min} ${t('min')}` : ''}</div>
+      <div class="meal-head"><b>${esc(r.title)}</b><span class="macro">${macro}</span></div>
+      <div class="muted">${r.items.map(esc).join(', ')}</div>
+      ${steps.length ? `<details><summary class="muted">${t('showHow')}</summary><ol class="steps">${steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol></details>` : ''}
+      ${others.length ? `<div class="alts"><span class="muted">${t('options')}:</span> ${others.map(o => `<button class="chip" data-alt="${esc(o.id)}" data-k="${k}">${esc(o.title)} <small>${o.kcal}</small></button>`).join(' ')}${r.id !== plan.id ? ` <button class="chip ghost" data-alt="" data-k="${k}">${t('original')}</button>` : ''}</div>` : ''}</div>`;
   });
   h += `</div>`;
   const got = S.shop[W.name] || {};
   const total = W.shopping.reduce((a, x) => a + x.price * (x.qty || 1), 0);
   const left = W.shopping.reduce((a, x, i) => a + (got[i] ? 0 : x.price * (x.qty || 1)), 0);
   h += `<div class="card"><h2>${t('shopping')} · ${esc(M.store)}</h2><div class="muted">${t('total')} ${cur}${total.toFixed(2)} · ${t('left')} ${cur}${left.toFixed(2)}</div>`;
-  let sec = null;
-  W.shopping.map((x, i) => ({ ...x, i })).sort((a, b) => (a.section || '').localeCompare(b.section || '') || a.i - b.i).forEach(x => {
-    if (x.section !== sec) { sec = x.section; h += `<div class="section-t">${esc(sec || '')}</div>`; }
-    h += `<label class="shop ${got[x.i] ? 'got' : ''}"><input type="checkbox" data-shop="${x.i}" ${got[x.i] ? 'checked' : ''}><span>${esc(x.item)}${x.qty > 1 ? ' × ' + x.qty : ''}</span><span class="price">${cur}${(x.price * (x.qty || 1)).toFixed(2)}</span></label>`;
-  });
+  const trips = [...new Set(W.shopping.map(x => x.trip || 1))].sort();
+  for (const tr of trips) {
+    if (trips.length > 1) { const sd = (M.shop_days || [])[tr - 1]; h += `<h3 class="trip">${t('trip')} ${tr}${sd ? ' · ' + t('dayNames')[sd - 1] : ''}</h3>`; }
+    let sec = null;
+    W.shopping.map((x, i) => ({ ...x, i })).filter(x => (x.trip || 1) === tr).sort((a, b) => (a.section || '').localeCompare(b.section || '') || a.i - b.i).forEach(x => {
+      if (x.section !== sec) { sec = x.section; h += `<div class="section-t">${esc(sec || '')}</div>`; }
+      h += `<label class="shop ${got[x.i] ? 'got' : ''}"><input type="checkbox" data-shop="${x.i}" ${got[x.i] ? 'checked' : ''}><span>${esc(x.item)}${x.qty > 1 ? ' × ' + x.qty : ''}${x.note ? `<small class="muted"> · ${esc(x.note)}</small>` : ''}</span><span class="price">${cur}${(x.price * (x.qty || 1)).toFixed(2)}</span></label>`;
+    });
+  }
   h += `</div>`;
   if (M.supplements && M.supplements.length) h += `<div class="card"><h2>${t('supplements')}</h2><ul class="plain">${M.supplements.map(s => `<li><b>${esc(s.name)}</b> ${esc(s.dose)}, ${esc(s.when)}</li>`).join('')}</ul></div>`;
   if (M.rules && M.rules.length) h += `<div class="card"><h2>${t('rules')}</h2><ul class="plain">${M.rules.map(r => `<li>${esc(r)}</li>`).join('')}</ul></div>`;
   return h;
 }
 function bindFood() {
-  document.querySelectorAll('[data-fw]').forEach(b => b.onclick = () => { S.foodWeek = b.dataset.fw === 'auto' ? null : +b.dataset.fw; save(); render(); });
-  document.querySelectorAll('[data-menu]').forEach(b => b.onclick = () => { menuShown = +b.dataset.menu; render(); });
+  document.querySelectorAll('[data-fw]').forEach(b => b.onclick = () => { S.foodWeek = b.dataset.fw === 'auto' ? null : +b.dataset.fw; dayShown = null; save(); render(); });
+  document.querySelectorAll('[data-fday]').forEach(b => b.onclick = () => { dayShown = +b.dataset.fday; render(); });
+  document.querySelectorAll('[data-alt]').forEach(b => b.onclick = () => {
+    const W = M.weeks[foodWeekIdx()], key = pickKey(W, dayShown, +b.dataset.k);
+    S.pick = S.pick || {}; if (b.dataset.alt) S.pick[key] = b.dataset.alt; else delete S.pick[key]; save(); render();
+  });
   document.querySelectorAll('[data-shop]').forEach(c => c.onchange = () => {
     const W = M.weeks[foodWeekIdx()]; S.shop[W.name] = S.shop[W.name] || {}; S.shop[W.name][c.dataset.shop] = c.checked; save(); render();
   });
@@ -460,6 +494,7 @@ async function init() {
     $('#view').innerHTML = `<div class="card"><p>${t('noData')}</p></div>`; return;
   }
   PROFILE = PROFILE || {};
+  normMeals(M);
   KEY = 'pck:' + (P.title || 'program') + (SEED && SEED.demo ? ':demo' : '');
   S = load() || (SEED && SEED.demo ? demoState() : blankState()); save();
   lang = S.lang || PROFILE.language || (navigator.language || 'en').slice(0, 2);
