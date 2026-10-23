@@ -118,3 +118,11 @@ svg.chart{width:100%;height:auto;display:block;margin-top:8px}
 .iv-btns button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:12px;padding:12px 22px;font-weight:700}
 .foot{text-align:center;font-size:.75rem;color:var(--text3);padding:20px 16px}
 @media (max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:1fr 1fr}}
+.seg.wrap{flex-wrap:wrap}
+.alts{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{border:1px solid var(--bg4);background:var(--bg3);color:var(--text);border-radius:999px;padding:4px 10px;font-size:.8rem}
+.chip small{color:var(--text2)}
+.chip.ghost{background:none;color:var(--text2)}
+ol.steps{margin:6px 0 0 18px;padding:0;font-size:.88rem;color:var(--text2)}
+details summary{cursor:pointer;margin-top:4px}
+h3.trip{font-size:.9rem;margin:14px 0 2px}

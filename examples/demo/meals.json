@@ -1,143 +1,1203 @@
 {
-  "targets": { "kcal": 2100, "protein": 170, "fat": 70, "carbs": 200, "water_l": 2.5 },
+  "targets": {
+    "kcal": 2100,
+    "protein": 170,
+    "fat": 70,
+    "carbs": 200,
+    "water_l": 2.5
+  },
   "store": "Lidl",
   "currency": "£",
   "rules": [
     "Protein in every meal, about a palm and a half.",
-    "Cook chilli and curry on Sunday and Wednesday, they cover two lunches each.",
+    "Batch cook on Monday: the chilli (both weeks) and the curry (week B) cover two or three meals.",
     "Water: a glass before every meal, a full bottle during training.",
     "One treat a week is planned, not forbidden: fit it into the day's calories.",
-    "Weigh yourself on Sunday morning, after the toilet, before food."
+    "Weigh yourself on Sunday morning, after the toilet, before food.",
+    "Cupboard staples (oil, soy sauce, chilli flakes, honey, peanut butter) are bought in week A and last both weeks."
   ],
   "supplements": [
-    { "name": "Creatine monohydrate", "dose": "5 g", "when": "daily, any time, with water" },
-    { "name": "Vitamin D3", "dose": "1000-2000 IU", "when": "October to March, with breakfast" }
+    {
+      "name": "Creatine monohydrate",
+      "dose": "5 g",
+      "when": "daily, any time, with water"
+    },
+    {
+      "name": "Vitamin D3",
+      "dose": "1000-2000 IU",
+      "when": "October to March, with breakfast"
+    }
+  ],
+  "slots": [
+    {
+      "name": "Breakfast",
+      "time": "07:30"
+    },
+    {
+      "name": "Lunch",
+      "time": "12:30"
+    },
+    {
+      "name": "Snack",
+      "time": "16:00"
+    },
+    {
+      "name": "Dinner",
+      "time": "20:00"
+    }
+  ],
+  "shop_days": [
+    1,
+    4
   ],
   "weeks": [
     {
       "name": "A",
-      "menus": [
+      "recipes": [
         {
-          "name": "Day 1",
+          "id": "a-b1",
+          "slot": "Breakfast",
+          "title": "Berry yogurt bowl",
+          "items": [
+            "300 g Greek-style yogurt 0%",
+            "50 g porridge oats",
+            "100 g frozen mixed berries",
+            "1 tbsp peanut butter (15 g)",
+            "1 tsp honey"
+          ],
+          "how": [
+            "Spoon the yogurt into a bowl",
+            "Top with oats and berries (frozen is fine, they thaw in 10 minutes)",
+            "Add peanut butter and honey"
+          ],
+          "prep_min": 3,
+          "kcal": 510,
+          "protein": 40,
+          "fat": 12,
+          "carbs": 56
+        },
+        {
+          "id": "a-b2",
+          "slot": "Breakfast",
+          "title": "Chilli scrambled eggs on toast",
+          "items": [
+            "3 eggs",
+            "2 slices wholemeal bread",
+            "80 g cherry tomatoes",
+            "150 g Greek-style yogurt 0%",
+            "pinch of chilli flakes"
+          ],
+          "how": [
+            "Whisk the eggs with a pinch of chilli flakes",
+            "Cook on low heat, stirring, take off while still soft",
+            "Serve on toast with halved tomatoes",
+            "Yogurt on the side"
+          ],
+          "prep_min": 8,
+          "kcal": 505,
+          "protein": 43,
+          "fat": 17,
+          "carbs": 41
+        },
+        {
+          "id": "a-b3",
+          "slot": "Breakfast",
+          "title": "Overnight oats with berries",
+          "items": [
+            "50 g porridge oats",
+            "250 g Greek-style yogurt 0%",
+            "150 ml skimmed milk",
+            "80 g frozen mixed berries",
+            "1 tbsp peanut butter (15 g)"
+          ],
+          "how": [
+            "Mix oats, yogurt and milk in a jar in the evening",
+            "Put berries on top, close the lid, fridge overnight",
+            "Stir in the peanut butter in the morning"
+          ],
+          "prep_min": 3,
+          "kcal": 505,
+          "protein": 40,
+          "fat": 12,
+          "carbs": 55
+        },
+        {
+          "id": "a-l1",
+          "slot": "Lunch",
+          "title": "Chilli chicken rice bowl",
+          "items": [
+            "180 g chicken breast",
+            "65 g basmati rice (dry)",
+            "150 g frozen stir-fry vegetables",
+            "10 g rapeseed oil",
+            "1 tbsp soy sauce",
+            "chilli flakes to taste"
+          ],
+          "how": [
+            "Start the rice (12 minutes)",
+            "Fry chicken strips in oil with chilli flakes for 6-7 minutes",
+            "Add the veg and soy, 4 more minutes",
+            "On Monday cook double and box Wednesday's portion"
+          ],
+          "prep_min": 15,
+          "kcal": 580,
+          "protein": 52,
+          "fat": 14,
+          "carbs": 59
+        },
+        {
+          "id": "a-l2",
+          "slot": "Lunch",
+          "title": "Tuna, egg and rice salad",
+          "items": [
+            "1 can tuna in spring water (112 g drained)",
+            "2 eggs, hard-boiled",
+            "60 g basmati rice (dry)",
+            "60 g sweetcorn",
+            "25 g light mayo",
+            "1/4 cucumber"
+          ],
+          "how": [
+            "Cook the rice and the eggs at the same time (10 minutes)",
+            "Cool the rice under cold water",
+            "Mix with tuna, sweetcorn, cucumber, mayo and chilli flakes",
+            "Halve the eggs on top; keeps 2 days in a box"
+          ],
+          "prep_min": 12,
+          "kcal": 610,
+          "protein": 48,
+          "fat": 19,
+          "carbs": 59
+        },
+        {
+          "id": "a-l3",
+          "slot": "Lunch",
+          "title": "Chicken and cheese wraps",
+          "items": [
+            "130 g chicken breast",
+            "2 wholemeal wraps",
+            "30 g lighter mature cheese",
+            "2 tbsp salsa",
+            "1/2 pepper"
+          ],
+          "how": [
+            "Slice the chicken and pepper thinly",
+            "Air fryer 200 C for 10 minutes (or pan 8 minutes) with chilli flakes",
+            "Fill the wraps with chicken, pepper, cheese and salsa"
+          ],
+          "prep_min": 12,
+          "kcal": 630,
+          "protein": 51,
+          "fat": 17,
+          "carbs": 62
+        },
+        {
+          "id": "a-s1",
+          "slot": "Snack",
+          "title": "Yogurt, berries and almonds",
+          "items": [
+            "300 g Greek-style yogurt 0%",
+            "100 g frozen mixed berries",
+            "25 g almonds",
+            "1 tsp honey"
+          ],
+          "how": [
+            "Put everything in a bowl or a box for work"
+          ],
+          "prep_min": 2,
+          "kcal": 385,
+          "protein": 36,
+          "fat": 14,
+          "carbs": 27
+        },
+        {
+          "id": "a-s2",
+          "slot": "Snack",
+          "title": "Tuna rice cakes and an apple",
+          "items": [
+            "1 can tuna in spring water (112 g drained)",
+            "4 rice cakes",
+            "1 tbsp light mayo",
+            "1 apple"
+          ],
+          "how": [
+            "Mix tuna with mayo and chilli flakes",
+            "Spread on the rice cakes",
+            "Apple on the side"
+          ],
+          "prep_min": 3,
+          "kcal": 355,
+          "protein": 31,
+          "fat": 7,
+          "carbs": 43
+        },
+        {
+          "id": "a-d1",
+          "slot": "Dinner",
+          "title": "Air-fryer chilli chicken, sweet potato wedges",
+          "items": [
+            "180 g chicken breast",
+            "300 g sweet potato",
+            "150 g broccoli",
+            "2 tsp oil",
+            "50 g Greek yogurt with chilli as a dip",
+            "chilli flakes"
+          ],
+          "how": [
+            "Cut sweet potato into wedges, toss with half the oil and chilli flakes",
+            "Air fryer 200 C for 18 minutes",
+            "Add chicken pieces with the rest of the oil and chilli after 6 minutes",
+            "Microwave the broccoli 3 minutes, serve with the yogurt dip"
+          ],
+          "prep_min": 12,
+          "kcal": 625,
+          "protein": 57,
+          "fat": 14,
+          "carbs": 68
+        },
+        {
+          "id": "a-d2",
+          "slot": "Dinner",
+          "title": "Chicken and bean chilli with rice",
+          "items": [
+            "160 g chicken breast, diced",
+            "1/2 can kidney beans",
+            "1/2 can chopped tomatoes",
+            "1/2 onion",
+            "1/2 pepper",
+            "10 g rapeseed oil",
+            "50 g basmati rice (dry)",
+            "chilli flakes"
+          ],
+          "how": [
+            "Start the rice",
+            "Fry onion, pepper and chicken in oil for 5 minutes",
+            "Add beans, tomatoes and chilli flakes, simmer 10 minutes",
+            "Monday: cook 2 portions, Tuesday is just the microwave"
+          ],
+          "prep_min": 18,
+          "kcal": 645,
+          "protein": 54,
+          "fat": 14,
+          "carbs": 71
+        },
+        {
+          "id": "a-d3",
+          "slot": "Dinner",
+          "title": "Chicken and egg fried rice",
+          "items": [
+            "150 g chicken breast",
+            "2 eggs",
+            "60 g basmati rice (dry)",
+            "150 g frozen stir-fry vegetables",
+            "10 g rapeseed oil",
+            "1 tbsp soy sauce",
+            "chilli flakes"
+          ],
+          "how": [
+            "Cook the rice (or use leftover cold rice)",
+            "Fry chicken strips 6 minutes, push to the side",
+            "Scramble the eggs in the same pan",
+            "Add rice, veg, soy and chilli, stir-fry 4 minutes"
+          ],
+          "prep_min": 18,
+          "kcal": 670,
+          "protein": 57,
+          "fat": 23,
+          "carbs": 56
+        }
+      ],
+      "days": [
+        {
+          "dow": 1,
           "meals": [
-            { "slot": "Breakfast", "title": "Greek yogurt bowl", "items": ["300 g Greek-style yogurt 0%", "40 g porridge oats", "100 g frozen berries", "1 tsp honey"], "how": "Mix the night before so the berries thaw.", "kcal": 470, "protein": 36 },
-            { "slot": "Lunch", "title": "Chicken rice box", "items": ["180 g chicken breast", "75 g basmati rice (dry)", "150 g frozen stir-fry veg", "1 tbsp soy sauce", "1 tsp oil"], "how": "Pan-fry the chicken in strips, add veg and soy for 4 minutes.", "kcal": 640, "protein": 52 },
-            { "slot": "Snack", "title": "Cottage cheese and apple", "items": ["200 g cottage cheese", "1 apple", "15 g almonds"], "how": "No cooking.", "kcal": 330, "protein": 24 },
-            { "slot": "Dinner", "title": "Turkey chilli (batch)", "items": ["200 g turkey mince", "120 g kidney beans", "200 g chopped tomatoes", "200 g potatoes", "chilli powder, cumin"], "how": "Cook 4 portions at once, keep 2 in the fridge for Day 3 lunch.", "kcal": 660, "protein": 58 }
+            "a-b1",
+            "a-l1",
+            "a-s1",
+            "a-d2"
           ]
         },
         {
-          "name": "Day 2",
+          "dow": 2,
           "meals": [
-            { "slot": "Breakfast", "title": "Eggs on toast + skyr", "items": ["3 eggs, scrambled", "2 slices wholemeal bread", "150 g skyr with cinnamon"], "how": "Low heat, take the eggs off while still soft.", "kcal": 520, "protein": 40 },
-            { "slot": "Lunch", "title": "Tuna pasta salad", "items": ["2 cans tuna in water", "70 g pasta (dry)", "80 g sweetcorn", "1 tbsp light mayo", "cucumber"], "how": "Make 2 boxes in the evening.", "kcal": 590, "protein": 55 },
-            { "slot": "Snack", "title": "Protein milkshake + banana", "items": ["330 ml high-protein milkshake", "1 banana"], "how": "Good right after training.", "kcal": 280, "protein": 30 },
-            { "slot": "Dinner", "title": "Chicken fajitas", "items": ["150 g chicken breast", "2 wholemeal wraps", "1 pepper, 1/2 onion", "30 g light cheese", "2 tbsp salsa"], "how": "Hot pan, 8 minutes, fajita spice.", "kcal": 710, "protein": 45 }
+            "a-b2",
+            "a-l2",
+            "a-s2",
+            "a-d2"
           ]
         },
         {
-          "name": "Day 3",
+          "dow": 3,
           "meals": [
-            { "slot": "Breakfast", "title": "Overnight oats", "items": ["50 g oats", "200 g skyr", "150 ml skimmed milk", "1 tbsp peanut butter"], "how": "Jar in the fridge overnight.", "kcal": 480, "protein": 38 },
-            { "slot": "Lunch", "title": "Turkey chilli (from batch)", "items": ["1 portion chilli", "1 slice wholemeal bread"], "how": "Microwave 3 minutes.", "kcal": 600, "protein": 50 },
-            { "slot": "Snack", "title": "Cottage cheese crackers", "items": ["200 g cottage cheese", "4 rice cakes", "cherry tomatoes"], "how": "No cooking.", "kcal": 300, "protein": 28 },
-            { "slot": "Dinner", "title": "Baked cod, potatoes, peas", "items": ["2 frozen cod fillets (250 g)", "300 g potatoes", "150 g frozen peas", "1 tsp oil, lemon"], "how": "Oven 200 C: potatoes 35 min, cod for the last 20.", "kcal": 720, "protein": 54 }
+            "a-b3",
+            "a-l1",
+            "a-s1",
+            "a-d1"
+          ]
+        },
+        {
+          "dow": 4,
+          "meals": [
+            "a-b1",
+            "a-l3",
+            "a-s2",
+            "a-d3"
+          ]
+        },
+        {
+          "dow": 5,
+          "meals": [
+            "a-b2",
+            "a-l2",
+            "a-s1",
+            "a-d1"
+          ]
+        },
+        {
+          "dow": 6,
+          "meals": [
+            "a-b3",
+            "a-l3",
+            "a-s2",
+            "a-d3"
+          ]
+        },
+        {
+          "dow": 7,
+          "meals": [
+            "a-b1",
+            "a-l2",
+            "a-s1",
+            "a-d2"
           ]
         }
       ],
       "shopping": [
-        { "item": "Chicken breast fillets 1 kg", "qty": 1, "price": 5.99, "section": "Meat & fish" },
-        { "item": "Turkey breast mince 500 g", "qty": 2, "price": 2.99, "section": "Meat & fish" },
-        { "item": "Tuna chunks in water 145 g", "qty": 4, "price": 0.79, "section": "Meat & fish" },
-        { "item": "Frozen cod fillets 520 g", "qty": 1, "price": 3.79, "section": "Frozen" },
-        { "item": "Frozen berries 500 g", "qty": 1, "price": 1.99, "section": "Frozen" },
-        { "item": "Stir-fry vegetables 600 g", "qty": 1, "price": 1.29, "section": "Frozen" },
-        { "item": "Garden peas 900 g", "qty": 1, "price": 0.99, "section": "Frozen" },
-        { "item": "Greek-style yogurt 0% 1 kg", "qty": 1, "price": 1.89, "section": "Dairy" },
-        { "item": "Skyr 450 g", "qty": 2, "price": 1.29, "section": "Dairy" },
-        { "item": "Cottage cheese 300 g", "qty": 3, "price": 0.99, "section": "Dairy" },
-        { "item": "Eggs, 15 pack", "qty": 1, "price": 3.15, "section": "Dairy" },
-        { "item": "Skimmed milk 2 pints", "qty": 1, "price": 1.25, "section": "Dairy" },
-        { "item": "High-protein milkshake 330 ml", "qty": 3, "price": 1.19, "section": "Dairy" },
-        { "item": "Light cheese 250 g", "qty": 1, "price": 1.79, "section": "Dairy" },
-        { "item": "Potatoes 2 kg", "qty": 1, "price": 1.29, "section": "Fruit & veg" },
-        { "item": "Bananas, 5 pack", "qty": 1, "price": 0.79, "section": "Fruit & veg" },
-        { "item": "Apples, 6 pack", "qty": 1, "price": 1.19, "section": "Fruit & veg" },
-        { "item": "Peppers, 3 pack", "qty": 1, "price": 1.29, "section": "Fruit & veg" },
-        { "item": "Cucumber", "qty": 1, "price": 0.69, "section": "Fruit & veg" },
-        { "item": "Cherry tomatoes 250 g", "qty": 1, "price": 0.89, "section": "Fruit & veg" },
-        { "item": "Onions 1 kg", "qty": 1, "price": 0.79, "section": "Fruit & veg" },
-        { "item": "Porridge oats 1 kg", "qty": 1, "price": 0.89, "section": "Cupboard" },
-        { "item": "Basmati rice 1 kg", "qty": 1, "price": 1.69, "section": "Cupboard" },
-        { "item": "Pasta 500 g", "qty": 1, "price": 0.55, "section": "Cupboard" },
-        { "item": "Kidney beans 400 g", "qty": 2, "price": 0.39, "section": "Cupboard" },
-        { "item": "Chopped tomatoes 400 g", "qty": 2, "price": 0.39, "section": "Cupboard" },
-        { "item": "Sweetcorn 326 g", "qty": 1, "price": 0.55, "section": "Cupboard" },
-        { "item": "Wholemeal wraps, 8 pack", "qty": 1, "price": 1.09, "section": "Bakery" },
-        { "item": "Wholemeal bread 800 g", "qty": 1, "price": 0.79, "section": "Bakery" },
-        { "item": "Rice cakes", "qty": 1, "price": 0.65, "section": "Cupboard" },
-        { "item": "Almonds 200 g", "qty": 1, "price": 1.99, "section": "Cupboard" },
-        { "item": "Salsa dip 300 g", "qty": 1, "price": 0.99, "section": "Cupboard" }
+        {
+          "item": "Chicken breast fillets 1 kg",
+          "qty": 1,
+          "price": 5.99,
+          "section": "Meat & fish",
+          "trip": 1
+        },
+        {
+          "item": "Chicken breast fillets 1 kg",
+          "qty": 1,
+          "price": 5.99,
+          "section": "Meat & fish",
+          "trip": 2
+        },
+        {
+          "item": "Tuna chunks in spring water 145 g",
+          "qty": 3,
+          "price": 0.89,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Tuna chunks in spring water 145 g",
+          "qty": 3,
+          "price": 0.89,
+          "section": "Cupboard",
+          "trip": 2
+        },
+        {
+          "item": "Free range eggs, 15 pack",
+          "qty": 1,
+          "price": 2.89,
+          "section": "Dairy & eggs",
+          "trip": 1
+        },
+        {
+          "item": "Free range eggs, 6 pack",
+          "qty": 1,
+          "price": 1.19,
+          "section": "Dairy & eggs",
+          "trip": 2
+        },
+        {
+          "item": "Greek-style yogurt 0% fat 1 kg",
+          "qty": 2,
+          "price": 1.79,
+          "section": "Dairy & eggs",
+          "trip": 1
+        },
+        {
+          "item": "Greek-style yogurt 0% fat 1 kg",
+          "qty": 1,
+          "price": 1.79,
+          "section": "Dairy & eggs",
+          "trip": 2
+        },
+        {
+          "item": "Skimmed milk 1 pint",
+          "qty": 1,
+          "price": 0.75,
+          "section": "Dairy & eggs",
+          "trip": 1
+        },
+        {
+          "item": "Lighter mature cheese 350 g",
+          "qty": 1,
+          "price": 2.29,
+          "section": "Dairy & eggs",
+          "trip": 2
+        },
+        {
+          "item": "Frozen mixed berries 500 g",
+          "qty": 1,
+          "price": 2.19,
+          "section": "Frozen",
+          "trip": 1
+        },
+        {
+          "item": "Frozen mixed berries 500 g",
+          "qty": 1,
+          "price": 2.19,
+          "section": "Frozen",
+          "trip": 2
+        },
+        {
+          "item": "Stir-fry vegetables 600 g",
+          "qty": 1,
+          "price": 1.29,
+          "section": "Frozen",
+          "trip": 1
+        },
+        {
+          "item": "Sweet potatoes 1 kg",
+          "qty": 1,
+          "price": 1.15,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Broccoli",
+          "qty": 1,
+          "price": 0.69,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Broccoli",
+          "qty": 1,
+          "price": 0.69,
+          "section": "Fruit & veg",
+          "trip": 2
+        },
+        {
+          "item": "Mixed peppers, 3 pack",
+          "qty": 1,
+          "price": 1.29,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Brown onions 1 kg",
+          "qty": 1,
+          "price": 0.85,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Cherry tomatoes 250 g",
+          "qty": 1,
+          "price": 0.85,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Cucumber",
+          "qty": 1,
+          "price": 0.59,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Apples, 6 pack",
+          "qty": 1,
+          "price": 1.25,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Basmati rice 1 kg",
+          "qty": 1,
+          "price": 1.59,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Porridge oats 1 kg",
+          "qty": 1,
+          "price": 0.85,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Red kidney beans 400 g",
+          "qty": 2,
+          "price": 0.39,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Chopped tomatoes 400 g",
+          "qty": 2,
+          "price": 0.35,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Sweetcorn 340 g",
+          "qty": 1,
+          "price": 0.59,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Rice cakes 130 g",
+          "qty": 1,
+          "price": 0.65,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Wholemeal tortilla wraps, 8 pack",
+          "qty": 1,
+          "price": 1.09,
+          "section": "Bakery",
+          "trip": 2
+        },
+        {
+          "item": "Wholemeal bread 800 g",
+          "qty": 1,
+          "price": 0.75,
+          "section": "Bakery",
+          "trip": 1,
+          "note": "freeze half, toast slices straight from frozen"
+        },
+        {
+          "item": "Salsa dip 300 g",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Cupboard",
+          "trip": 2
+        },
+        {
+          "item": "Light mayonnaise 500 ml",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Smooth peanut butter 340 g",
+          "qty": 1,
+          "price": 1.09,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Almonds 200 g",
+          "qty": 1,
+          "price": 1.99,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Clear honey 340 g",
+          "qty": 1,
+          "price": 1.49,
+          "section": "Cupboard",
+          "trip": 1,
+          "note": "lasts a month or more"
+        },
+        {
+          "item": "Soy sauce 150 ml",
+          "qty": 1,
+          "price": 0.79,
+          "section": "Cupboard",
+          "trip": 1,
+          "note": "lasts a month or more"
+        },
+        {
+          "item": "Crushed chillies 40 g",
+          "qty": 1,
+          "price": 0.79,
+          "section": "Cupboard",
+          "trip": 1,
+          "note": "lasts a month or more"
+        },
+        {
+          "item": "Rapeseed oil 1 L",
+          "qty": 1,
+          "price": 1.49,
+          "section": "Cupboard",
+          "trip": 1,
+          "note": "lasts a month or more"
+        }
       ]
     },
     {
       "name": "B",
-      "menus": [
+      "recipes": [
         {
-          "name": "Day 1",
+          "id": "b-b1",
+          "slot": "Breakfast",
+          "title": "Banana protein pancakes",
+          "items": [
+            "2 eggs",
+            "40 g porridge oats",
+            "1 banana",
+            "200 g Greek-style yogurt 0%",
+            "50 g frozen mixed berries"
+          ],
+          "how": [
+            "Blend or mash eggs, oats and banana",
+            "Fry 4 small pancakes in a non-stick pan, 2 minutes a side",
+            "Top with yogurt and berries"
+          ],
+          "prep_min": 12,
+          "kcal": 535,
+          "protein": 39,
+          "fat": 14,
+          "carbs": 64
+        },
+        {
+          "id": "b-b2",
+          "slot": "Breakfast",
+          "title": "Breakfast burrito",
+          "items": [
+            "3 eggs",
+            "1 wholemeal wrap",
+            "20 g lighter mature cheese",
+            "2 tbsp salsa",
+            "100 g Greek-style yogurt 0%"
+          ],
+          "how": [
+            "Scramble the eggs with chilli flakes",
+            "Warm the wrap 20 seconds in the microwave",
+            "Fill with eggs, cheese, salsa and a spoon of yogurt, roll up"
+          ],
+          "prep_min": 8,
+          "kcal": 530,
+          "protein": 40,
+          "fat": 24,
+          "carbs": 36
+        },
+        {
+          "id": "b-b3",
+          "slot": "Breakfast",
+          "title": "Berry and banana yogurt bowl",
+          "items": [
+            "300 g Greek-style yogurt 0%",
+            "40 g porridge oats",
+            "1/2 banana",
+            "100 g frozen mixed berries",
+            "1 tbsp peanut butter (15 g)"
+          ],
+          "how": [
+            "Spoon the yogurt into a bowl",
+            "Top with oats, sliced banana, berries and peanut butter"
+          ],
+          "prep_min": 3,
+          "kcal": 505,
+          "protein": 40,
+          "fat": 12,
+          "carbs": 59
+        },
+        {
+          "id": "b-l1",
+          "slot": "Lunch",
+          "title": "Chicken and spinach curry with rice",
+          "items": [
+            "170 g chicken breast",
+            "1 tbsp curry paste",
+            "100 g light coconut milk",
+            "60 g baby spinach",
+            "1/2 onion",
+            "60 g basmati rice (dry)"
+          ],
+          "how": [
+            "Monday: cook 3 portions at once (about 20 minutes)",
+            "Fry onion and curry paste 2 minutes, add chicken for 5",
+            "Pour in coconut milk, simmer 8 minutes, stir in spinach",
+            "Box with rice, freeze the Sunday portion; microwave 3 minutes to eat"
+          ],
+          "prep_min": 20,
+          "kcal": 545,
+          "protein": 49,
+          "fat": 13,
+          "carbs": 55
+        },
+        {
+          "id": "b-l2",
+          "slot": "Lunch",
+          "title": "Chilli tuna pasta",
+          "items": [
+            "1 can tuna in spring water (112 g drained)",
+            "70 g pasta (dry)",
+            "1/2 can chopped tomatoes",
+            "10 g rapeseed oil",
+            "20 g lighter mature cheese",
+            "chilli flakes"
+          ],
+          "how": [
+            "Boil the pasta (10 minutes)",
+            "Warm tomatoes with oil and chilli flakes in a pan",
+            "Stir in tuna and pasta, top with grated cheese"
+          ],
+          "prep_min": 12,
+          "kcal": 570,
+          "protein": 44,
+          "fat": 17,
+          "carbs": 56
+        },
+        {
+          "id": "b-l3",
+          "slot": "Lunch",
+          "title": "Jacket potato with chicken and sweetcorn",
+          "items": [
+            "1 baking potato (300 g)",
+            "120 g chicken breast",
+            "60 g sweetcorn",
+            "20 g lighter mature cheese",
+            "100 g Greek yogurt with chilli"
+          ],
+          "how": [
+            "Prick the potato, microwave 8-10 minutes",
+            "Meanwhile pan-fry the chicken pieces 7 minutes",
+            "Split the potato, fill with chicken, sweetcorn, cheese and chilli yogurt"
+          ],
+          "prep_min": 12,
+          "kcal": 530,
+          "protein": 52,
+          "fat": 7,
+          "carbs": 63
+        },
+        {
+          "id": "b-s1",
+          "slot": "Snack",
+          "title": "Yogurt, berries and almonds",
+          "items": [
+            "300 g Greek-style yogurt 0%",
+            "100 g frozen mixed berries",
+            "25 g almonds",
+            "1 tsp honey"
+          ],
+          "how": [
+            "Put everything in a bowl or a box for work"
+          ],
+          "prep_min": 2,
+          "kcal": 385,
+          "protein": 36,
+          "fat": 14,
+          "carbs": 27
+        },
+        {
+          "id": "b-s2",
+          "slot": "Snack",
+          "title": "Tuna rice cakes and an apple",
+          "items": [
+            "1 can tuna in spring water (112 g drained)",
+            "4 rice cakes",
+            "1 tbsp light mayo",
+            "1 apple"
+          ],
+          "how": [
+            "Mix tuna with mayo and chilli flakes",
+            "Spread on the rice cakes",
+            "Apple on the side"
+          ],
+          "prep_min": 3,
+          "kcal": 355,
+          "protein": 31,
+          "fat": 7,
+          "carbs": 43
+        },
+        {
+          "id": "b-d1",
+          "slot": "Dinner",
+          "title": "Chicken fajitas",
+          "items": [
+            "170 g chicken breast",
+            "2 wholemeal wraps",
+            "1 pepper",
+            "1/2 onion",
+            "1 tsp oil",
+            "2 tbsp salsa",
+            "50 g Greek-style yogurt 0%",
+            "chilli flakes, cumin"
+          ],
+          "how": [
+            "Slice chicken, pepper and onion into strips",
+            "Very hot pan with oil, chilli flakes and cumin, 8 minutes",
+            "Fill the wraps, top with salsa and yogurt"
+          ],
+          "prep_min": 15,
+          "kcal": 690,
+          "protein": 59,
+          "fat": 17,
+          "carbs": 71
+        },
+        {
+          "id": "b-d2",
+          "slot": "Dinner",
+          "title": "Chilli chicken noodles",
+          "items": [
+            "170 g chicken breast",
+            "65 g egg noodles (dry)",
+            "200 g frozen stir-fry vegetables",
+            "1 egg",
+            "10 g rapeseed oil",
+            "1 tbsp soy sauce",
+            "chilli flakes"
+          ],
+          "how": [
+            "Boil the noodles 4 minutes, drain",
+            "Fry chicken strips 6 minutes, add the veg for 3",
+            "Crack in the egg and stir, add noodles, soy and chilli flakes"
+          ],
+          "prep_min": 15,
+          "kcal": 660,
+          "protein": 60,
+          "fat": 19,
+          "carbs": 57
+        },
+        {
+          "id": "b-d3",
+          "slot": "Dinner",
+          "title": "Beef chilli with rice",
+          "items": [
+            "150 g 5% fat beef mince",
+            "1/2 can kidney beans",
+            "1/2 can chopped tomatoes",
+            "1/2 onion",
+            "1/2 pepper",
+            "60 g basmati rice (dry)",
+            "1 tbsp Greek yogurt",
+            "chilli flakes, cumin"
+          ],
+          "how": [
+            "Start the rice",
+            "Brown the mince with onion and pepper, 6 minutes, no oil needed",
+            "Add beans, tomatoes, chilli flakes and cumin, simmer 10 minutes",
+            "Monday: cook 3 portions, eat one Tuesday and freeze one for Sunday"
+          ],
+          "prep_min": 18,
+          "kcal": 620,
+          "protein": 51,
+          "fat": 9,
+          "carbs": 80
+        }
+      ],
+      "days": [
+        {
+          "dow": 1,
           "meals": [
-            { "slot": "Breakfast", "title": "Protein pancakes", "items": ["2 eggs", "40 g oats", "1 banana", "150 g skyr on top"], "how": "Blend eggs, oats and banana, fry 4 small pancakes.", "kcal": 500, "protein": 38 },
-            { "slot": "Lunch", "title": "Chicken couscous salad", "items": ["180 g chicken breast", "70 g couscous (dry)", "cucumber, tomato", "30 g light feta"], "how": "Pour boiling water on the couscous, 5 minutes, mix everything.", "kcal": 620, "protein": 55 },
-            { "slot": "Snack", "title": "Skyr with berries", "items": ["250 g skyr", "80 g frozen berries", "10 g dark chocolate"], "how": "No cooking.", "kcal": 300, "protein": 25 },
-            { "slot": "Dinner", "title": "Beef noodle stir-fry", "items": ["180 g lean beef strips", "75 g rice noodles", "200 g frozen stir-fry veg", "1 tbsp soy, ginger"], "how": "Very hot pan, beef first, 6 minutes total.", "kcal": 680, "protein": 52 }
+            "b-b1",
+            "b-l1",
+            "b-s1",
+            "b-d3"
           ]
         },
         {
-          "name": "Day 2",
+          "dow": 2,
           "meals": [
-            { "slot": "Breakfast", "title": "Eggs and beans", "items": ["3 eggs", "1/2 can baked beans", "1 slice wholemeal bread"], "how": "Fried in a dry non-stick pan.", "kcal": 520, "protein": 34 },
-            { "slot": "Lunch", "title": "Jacket potato with tuna", "items": ["300 g potato", "1 can tuna in water", "60 g sweetcorn", "30 g light cheese"], "how": "Microwave the potato 8-10 minutes.", "kcal": 560, "protein": 45 },
-            { "slot": "Snack", "title": "Protein milkshake + apple", "items": ["330 ml high-protein milkshake", "1 apple", "15 g almonds"], "how": "No cooking.", "kcal": 330, "protein": 30 },
-            { "slot": "Dinner", "title": "Chicken curry (batch)", "items": ["200 g chicken breast", "1 tbsp curry paste", "100 ml light coconut milk", "75 g rice (dry)", "handful of spinach"], "how": "Cook 4 portions, keep 2 for Day 3 lunch.", "kcal": 690, "protein": 61 }
+            "b-b2",
+            "b-l1",
+            "b-s2",
+            "b-d3"
           ]
         },
         {
-          "name": "Day 3",
+          "dow": 3,
           "meals": [
-            { "slot": "Breakfast", "title": "Greek yogurt bowl", "items": ["300 g Greek-style yogurt 0%", "40 g oats", "100 g frozen berries", "1 tsp honey"], "how": "Mix the night before.", "kcal": 470, "protein": 36 },
-            { "slot": "Lunch", "title": "Chicken curry (from batch)", "items": ["1 portion curry with rice"], "how": "Microwave 3 minutes.", "kcal": 600, "protein": 50 },
-            { "slot": "Snack", "title": "Cottage cheese crackers", "items": ["200 g cottage cheese", "4 rice cakes", "cucumber"], "how": "No cooking.", "kcal": 300, "protein": 28 },
-            { "slot": "Dinner", "title": "Salmon traybake", "items": ["1 salmon fillet (120 g)", "100 g frozen cod", "250 g sweet potato", "200 g broccoli"], "how": "Oven 200 C, sweet potato 25 min, fish and broccoli 15 more.", "kcal": 730, "protein": 56 }
+            "b-b3",
+            "b-l2",
+            "b-s1",
+            "b-d1"
+          ]
+        },
+        {
+          "dow": 4,
+          "meals": [
+            "b-b1",
+            "b-l3",
+            "b-s2",
+            "b-d2"
+          ]
+        },
+        {
+          "dow": 5,
+          "meals": [
+            "b-b2",
+            "b-l2",
+            "b-s1",
+            "b-d1"
+          ]
+        },
+        {
+          "dow": 6,
+          "meals": [
+            "b-b3",
+            "b-l3",
+            "b-s2",
+            "b-d2"
+          ]
+        },
+        {
+          "dow": 7,
+          "meals": [
+            "b-b1",
+            "b-l1",
+            "b-s1",
+            "b-d3"
           ]
         }
       ],
       "shopping": [
-        { "item": "Chicken breast fillets 1 kg", "qty": 2, "price": 5.99, "section": "Meat & fish" },
-        { "item": "Lean beef strips 400 g", "qty": 1, "price": 3.99, "section": "Meat & fish" },
-        { "item": "Salmon fillets, 2 pack", "qty": 1, "price": 3.49, "section": "Meat & fish" },
-        { "item": "Tuna chunks in water 145 g", "qty": 2, "price": 0.79, "section": "Meat & fish" },
-        { "item": "Frozen cod fillets 520 g", "qty": 1, "price": 3.79, "section": "Frozen" },
-        { "item": "Frozen berries 500 g", "qty": 1, "price": 1.99, "section": "Frozen" },
-        { "item": "Stir-fry vegetables 600 g", "qty": 1, "price": 1.29, "section": "Frozen" },
-        { "item": "Greek-style yogurt 0% 1 kg", "qty": 1, "price": 1.89, "section": "Dairy" },
-        { "item": "Skyr 450 g", "qty": 3, "price": 1.29, "section": "Dairy" },
-        { "item": "Cottage cheese 300 g", "qty": 2, "price": 0.99, "section": "Dairy" },
-        { "item": "Eggs, 15 pack", "qty": 1, "price": 3.15, "section": "Dairy" },
-        { "item": "High-protein milkshake 330 ml", "qty": 2, "price": 1.19, "section": "Dairy" },
-        { "item": "Light feta 200 g", "qty": 1, "price": 1.39, "section": "Dairy" },
-        { "item": "Bananas, 5 pack", "qty": 1, "price": 0.79, "section": "Fruit & veg" },
-        { "item": "Apples, 6 pack", "qty": 1, "price": 1.19, "section": "Fruit & veg" },
-        { "item": "Sweet potatoes 1 kg", "qty": 1, "price": 1.25, "section": "Fruit & veg" },
-        { "item": "Broccoli", "qty": 2, "price": 0.69, "section": "Fruit & veg" },
-        { "item": "Baby spinach 240 g", "qty": 1, "price": 1.25, "section": "Fruit & veg" },
-        { "item": "Baking potatoes, 4 pack", "qty": 1, "price": 0.99, "section": "Fruit & veg" },
-        { "item": "Cucumber", "qty": 1, "price": 0.69, "section": "Fruit & veg" },
-        { "item": "Couscous 500 g", "qty": 1, "price": 0.85, "section": "Cupboard" },
-        { "item": "Rice noodles 400 g", "qty": 1, "price": 1.29, "section": "Cupboard" },
-        { "item": "Baked beans 400 g", "qty": 1, "price": 0.35, "section": "Cupboard" },
-        { "item": "Light coconut milk 400 ml", "qty": 1, "price": 0.99, "section": "Cupboard" },
-        { "item": "Curry paste 290 g", "qty": 1, "price": 1.19, "section": "Cupboard" },
-        { "item": "Dark chocolate 85% 100 g", "qty": 1, "price": 1.09, "section": "Cupboard" }
+        {
+          "item": "Chicken breast fillets 1 kg",
+          "qty": 1,
+          "price": 5.99,
+          "section": "Meat & fish",
+          "trip": 1
+        },
+        {
+          "item": "Chicken breast fillets 650 g",
+          "qty": 1,
+          "price": 4.29,
+          "section": "Meat & fish",
+          "trip": 2
+        },
+        {
+          "item": "5% fat beef mince 500 g",
+          "qty": 1,
+          "price": 3.49,
+          "section": "Meat & fish",
+          "trip": 1,
+          "note": "cook 3 portions Monday, freeze one for Sunday"
+        },
+        {
+          "item": "Tuna chunks in spring water 145 g",
+          "qty": 2,
+          "price": 0.89,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Tuna chunks in spring water 145 g",
+          "qty": 3,
+          "price": 0.89,
+          "section": "Cupboard",
+          "trip": 2
+        },
+        {
+          "item": "Free range eggs, 15 pack",
+          "qty": 1,
+          "price": 2.89,
+          "section": "Dairy & eggs",
+          "trip": 1
+        },
+        {
+          "item": "Greek-style yogurt 0% fat 1 kg",
+          "qty": 2,
+          "price": 1.79,
+          "section": "Dairy & eggs",
+          "trip": 1
+        },
+        {
+          "item": "Greek-style yogurt 0% fat 1 kg",
+          "qty": 1,
+          "price": 1.79,
+          "section": "Dairy & eggs",
+          "trip": 2
+        },
+        {
+          "item": "Lighter mature cheese 350 g",
+          "qty": 1,
+          "price": 2.29,
+          "section": "Dairy & eggs",
+          "trip": 1
+        },
+        {
+          "item": "Frozen mixed berries 500 g",
+          "qty": 1,
+          "price": 2.19,
+          "section": "Frozen",
+          "trip": 1
+        },
+        {
+          "item": "Frozen mixed berries 500 g",
+          "qty": 1,
+          "price": 2.19,
+          "section": "Frozen",
+          "trip": 2
+        },
+        {
+          "item": "Stir-fry vegetables 600 g",
+          "qty": 1,
+          "price": 1.29,
+          "section": "Frozen",
+          "trip": 2
+        },
+        {
+          "item": "Bananas, 5 pack",
+          "qty": 1,
+          "price": 0.79,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Baby spinach 200 g",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Mixed peppers, 3 pack",
+          "qty": 2,
+          "price": 1.29,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Brown onions 1 kg",
+          "qty": 1,
+          "price": 0.85,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Baking potatoes, 4 pack",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Fruit & veg",
+          "trip": 2
+        },
+        {
+          "item": "Apples, 6 pack",
+          "qty": 1,
+          "price": 1.25,
+          "section": "Fruit & veg",
+          "trip": 1
+        },
+        {
+          "item": "Basmati rice 1 kg",
+          "qty": 1,
+          "price": 1.59,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Porridge oats 1 kg",
+          "qty": 1,
+          "price": 0.85,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Fusilli pasta 500 g",
+          "qty": 1,
+          "price": 0.55,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Medium egg noodles 250 g",
+          "qty": 1,
+          "price": 0.79,
+          "section": "Cupboard",
+          "trip": 2
+        },
+        {
+          "item": "Red kidney beans 400 g",
+          "qty": 2,
+          "price": 0.39,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Chopped tomatoes 400 g",
+          "qty": 3,
+          "price": 0.35,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Sweetcorn 340 g",
+          "qty": 1,
+          "price": 0.59,
+          "section": "Cupboard",
+          "trip": 2
+        },
+        {
+          "item": "Rice cakes 130 g",
+          "qty": 1,
+          "price": 0.65,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Light coconut milk 400 ml",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Tikka curry paste 290 g",
+          "qty": 1,
+          "price": 1.19,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Wholemeal tortilla wraps, 8 pack",
+          "qty": 1,
+          "price": 1.09,
+          "section": "Bakery",
+          "trip": 1
+        },
+        {
+          "item": "Salsa dip 300 g",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Light mayonnaise 500 ml",
+          "qty": 1,
+          "price": 0.99,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Smooth peanut butter 340 g",
+          "qty": 1,
+          "price": 1.09,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Almonds 200 g",
+          "qty": 1,
+          "price": 1.99,
+          "section": "Cupboard",
+          "trip": 1
+        },
+        {
+          "item": "Ground cumin 40 g",
+          "qty": 1,
+          "price": 0.69,
+          "section": "Cupboard",
+          "trip": 1,
+          "note": "lasts a month or more"
+        }
       ]
     }
   ]
