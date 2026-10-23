@@ -37,7 +37,10 @@ Do not ask what you can infer (language from how they write, timezone from the s
 
 1. `data/profile.json`: same keys as `examples/demo/profile.json` (`schedule` object with wake/workout/sleep, `program.weeks`, `training_days` and `shop_days` as numbers Monday=1, `equipment`, `foods_love`, `foods_dislike`, `kitchen`, `meal_times` as lists, `store`, `store_address`, `units`, `timezone`).
 2. Read `prompts/coach.md` and follow it exactly as if it were addressed to you, with the profile you just wrote. Write `program` to `data/program.json` and `meals` to `data/meals.json` (two separate files, not the combined object). The meal plan is big: write it in parts if needed (week A, then week B).
-3. Prices: if you can browse or search the web, open the chosen store's online shop or price pages and check the main items (protein sources, grains, dairy, the products they love); use real pack sizes. Otherwise estimate. Keep each week's shopping total within the budget.
+3. Prices: check real prices of the main items (protein sources, grains, dairy, the products they love) in the chosen store; use real pack sizes. Keep each week's shopping total within the budget.
+   - If you have your own web or browser tools, use them.
+   - If not, ask once: "To take prices from <store>'s website I can install a small headless browser (about 150 MB, 1-2 minutes). Install?" On yes run `node coach.mjs browser-setup`, then `node coach.mjs prices --store "<store>" --items "item 1, item 2, ..." --near "<city>"` (8-15 items per call; add `--site <domain>` if the store site is known or the wrong one was found). Lines marked `*` mention the item. To dig into one page: `node coach.mjs browse <url> --find "<item>"`.
+   - Stores without an online shop or with prices behind a postcode or login: use a big chain in the same country as a reference and say so. On no, estimate and say the prices are approximate.
 4. Run `node coach.mjs check`. Fix every problem, and also every warning (day calories or protein off target, a disliked food in a recipe, over budget), until it prints OK without warnings.
 
 ## 4. Show the result
