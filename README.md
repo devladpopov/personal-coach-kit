@@ -1,10 +1,20 @@
 # personal-coach-kit
 
-**Your own AI personal trainer and nutritionist in 5 minutes.** Answer a short questionnaire, let any AI (Claude, ChatGPT, Gemini or a local model) write your training program and a meal plan from the store you actually shop at, then train with a tracker that has rest timers, interval timers, a shopping list and progress charts. Optional Telegram bot reminds you, checks in and jokes in the personality you pick.
+**Your own AI personal trainer and nutritionist in about 15 minutes.** Answer a short questionnaire, let any AI (Claude, ChatGPT, Gemini or a local model) write your training program and a meal plan from the store you actually shop at, then train with a tracker that has rest timers, interval timers, a shopping list and progress charts. Optional Telegram bot reminds you, checks in and jokes in the personality you pick.
 
 [Русская версия](README.ru.md) · **[Live demo](https://personal-coach-kit.pages.dev)** (fictional profile) · [Демо на русском](https://personal-coach-kit.pages.dev/ru/)
 
 ![Tracker: today's workout, meal plan with shopping list, progress](docs/screenshot.png)
+
+## Easiest: hand it to your AI agent
+
+If you use Claude Code (or another agent that can run commands: Codex, Cursor, Claude Cowork), paste this and just answer the questions:
+
+```
+Clone https://github.com/devladpopov/personal-coach-kit into a folder personal-coach in my home folder (if there is no git, download the zip), go into it and follow .claude/skills/coach/SKILL.md: be my personal trainer and nutritionist.
+```
+
+The agent checks Node.js, interviews you, writes the program and the meal plan itself (no API key), validates them, opens the tracker and gives you a link for your phone. Publishing the site and the Telegram bot are offered as optional steps. Later, come back to the same folder and say "this exercise hurts", "here are my measurements" or "make the next block": the agent keeps coaching.
 
 ## Install and run (one command)
 
@@ -57,7 +67,7 @@ Override the model: COACH_MODEL=...   or   --model ...
 
 No API key at all? Run `node coach.mjs prompt`, paste `data/prompt.txt` into any chat window, save the answer to a file and run `node coach.mjs import answer.txt`. The answer is validated (7 days, sets and reps, menus, shopping list) and you get a clear list of problems if the model got something wrong. `generate` asks the model to fix its own mistakes once automatically.
 
-Using Claude Code? Open the repo and say "be my coach": the bundled skill (`.claude/skills/coach`) interviews you and writes the files itself, no key needed.
+Using Claude Code? Open the repo and say "be my coach": the bundled skill (`.claude/skills/coach`) interviews you and writes the files itself, no key needed. Edited the files by hand? `node coach.mjs check` validates them.
 
 ## Put it online
 

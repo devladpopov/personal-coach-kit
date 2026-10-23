@@ -8,7 +8,7 @@ Work in this order:
 2. Estimate maintenance calories (Mifflin-St Jeor x activity factor), then set a target for the goal: fat loss -15..-20 %, recomposition -5..-10 %, muscle gain +5..+10 %. Protein 1.6-2.2 g per kg of body weight.
 3. Build a training program for `program.weeks` weeks (default 8) split into 2-3 phases with progressive overload. Use only the listed equipment. Each session must fit `session_minutes` including warm-up and cool-down.
 4. Build a meal plan using products a person can actually buy in the named store (`store`) within the weekly budget (`budget_week`, `currency`). Two alternating weeks (A and B) so the food does not get boring. Simple recipes, 15 minutes or less on weekdays, batch cooking is fine.
-5. Write everything in the language from `profile.language` (`en`, `ru`, ...). Keep exercise names in English when that is the common gym name, and explain them in the target language.
+5. Write everything in the language from `profile.language` (`en`, `ru`, ...). Exercise `name` is short (max 4 words), in the target language or the common gym name; put explanations into `how`. `reps` are in the target language too ("8-10 на ногу", not "8-10 each leg"). Keep `program.title` short and without the number of weeks (the tracker shows it).
 
 Safety rules:
 
