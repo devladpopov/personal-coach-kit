@@ -4,6 +4,7 @@
 //   node coach.mjs generate    profile + prompts/coach.md -> your AI -> data/program.json, data/meals.json
 //   node coach.mjs prompt      write the full prompt to data/prompt.txt (paste it into any chat)
 //   node coach.mjs import F    take the AI answer saved in file F and split it into data/*.json
+//   node coach.mjs check       validate data/profile.json, data/program.json, data/meals.json (after you or an agent edit them)
 //   node coach.mjs demo        load the fictional demo profile into data/
 //   node coach.mjs serve       open the tracker on http://localhost:8080
 //   node coach.mjs build       static site in dist/ (Cloudflare Pages, GitHub Pages, any hosting)
@@ -15,6 +16,7 @@ import http from 'node:http';
 import readline from 'node:readline/promises';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
+import os from 'node:os';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const DATA = path.join(ROOT, 'data');
@@ -275,6 +277,39 @@ async function phrases(args) {
   console.log('Saved data/phrases.json. The bot will use it on the next start.');
 }
 
+// Validate the files in data/ in place: used by AI agents that write program.json and meals.json themselves.
+const PROFILE_KEYS = ['language', 'name', 'sex', 'age', 'height_cm', 'weight_kg', 'goal', 'training_days', 'session_minutes', 'equipment', 'store', 'budget_week', 'currency'];
+function check() {
+  const f = n => path.join(DATA, n);
+  const errs = [];
+  if (!fs.existsSync(f('profile.json'))) errs.push('data/profile.json is missing');
+  else {
+    const prof = readJSON(f('profile.json'));
+    for (const k of PROFILE_KEYS) if (prof[k] === undefined || prof[k] === '') errs.push(`profile.${k} is missing`);
+    if (!prof.schedule || !prof.schedule.workout) errs.push('profile.schedule.workout is missing');
+    if (!prof.program || !(prof.program.weeks > 0)) errs.push('profile.program.weeks is missing');
+  }
+  const o = {};
+  for (const k of ['program', 'meals']) {
+    if (!fs.existsSync(f(k + '.json'))) { errs.push(`data/${k}.json is missing`); continue; }
+    try { o[k] = readJSON(f(k + '.json')); } catch (e) { errs.push(`data/${k}.json is not valid JSON: ${e.message}`); }
+  }
+  if (o.program && o.meals) errs.push(...validate(o));
+  if (fs.existsSync(f('phrases.json'))) {
+    try { const ph = readJSON(f('phrases.json')); for (const k of ['hello', 'morning_train', 'morning_rest', 'workout', 'check', 'done', 'skipped', 'shop', 'weigh']) if (!Array.isArray(ph[k]) || !ph[k].length) errs.push(`phrases.${k} must be a non-empty list`); }
+    catch (e) { errs.push('data/phrases.json is not valid JSON: ' + e.message); }
+  }
+  if (errs.length) die('Problems:\n- ' + errs.join('\n- '));
+  if (fs.existsSync(f('seed.json'))) console.log('Note: data/seed.json switches on demo data in the tracker. Delete it for a real profile.');
+  const prof = readJSON(f('profile.json'));
+  const train = o.program.days.filter(d => !d.rest).length;
+  console.log(`OK: ${o.program.title}, ${o.program.weeks} weeks, ${train} training days; ${o.meals.targets.kcal} kcal, ${o.meals.targets.protein} g protein.`);
+  for (const w of o.meals.weeks) {
+    const total = w.shopping.reduce((a, x) => a + (+x.price || 0) * (x.qty || 1), 0);
+    console.log(`Week ${w.name} shopping: ${total.toFixed(2)} ${prof.currency || ''}${prof.budget_week && total > prof.budget_week * 1.1 ? `  OVER BUDGET (${prof.budget_week})` : ''}`);
+  }
+}
+
 function importAnswer(file) {
   if (!file) die('Usage: node coach.mjs import answer.txt');
   const o = extractJSON(fs.readFileSync(file, 'utf8'));
@@ -303,7 +338,11 @@ function serve(args) {
     if (u === '/data/profile.json') { res.writeHead(200, { 'content-type': MIME['.json'] }); return res.end(JSON.stringify(publicProfile(readJSON(f), fs.existsSync(path.join(DATA, 'seed.json'))))); }
     res.writeHead(200, { 'content-type': MIME[path.extname(f)] || 'application/octet-stream', 'cache-control': 'no-cache' });
     fs.createReadStream(f).pipe(res);
-  }).listen(port, () => console.log(`Tracker: http://localhost:${port}`));
+  }).listen(port, () => {
+    console.log(`Tracker: http://localhost:${port}`);
+    // Same Wi-Fi: open one of these on the phone while this computer is on.
+    for (const list of Object.values(os.networkInterfaces())) for (const a of list || []) if (a.family === 'IPv4' && !a.internal) console.log(`Phone on the same Wi-Fi: http://${a.address}:${port}`);
+  });
 }
 
 // The site is public: publish only what the page needs, never the full questionnaire.
@@ -342,12 +381,12 @@ for (let i = 0; i < rest.length; i++) {
 }
 fs.mkdirSync(DATA, { recursive: true });
 const cmds = {
-  init, generate: () => generate(args), phrases: () => phrases(args), import: () => importAnswer(pos[0]), demo: () => demo(args),
+  init, generate: () => generate(args), phrases: () => phrases(args), import: () => importAnswer(pos[0]), check, demo: () => demo(args),
   prompt: () => { const f = path.join(DATA, 'prompt.txt'); fs.writeFileSync(f, buildPrompt()); console.log(`Prompt saved to ${path.relative(ROOT, f)}. Paste it into Claude, ChatGPT, Gemini or a local model, save the answer to a file and run: node coach.mjs import <file>`); },
   serve: () => serve(args), build: () => build(args), bot
 };
 if (!cmds[cmd]) {
-  console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 12).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
+  console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1).filter((l, i, a) => a.slice(0, i + 1).every(x => x.startsWith('//'))).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
   process.exit(cmd ? 1 : 0);
 }
 Promise.resolve(cmds[cmd]()).catch(e => die(e.message));
