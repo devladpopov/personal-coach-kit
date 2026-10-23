@@ -9,3 +9,4 @@ node_modules/
 .test/
 .site/
 .site-ru/
+.browser/

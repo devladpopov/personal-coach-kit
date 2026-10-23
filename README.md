@@ -58,6 +58,8 @@ Telegram bot   morning plan + menu, reminder before training,
 
 Training without the right food is money down the drain, so the meal plan gets as much attention as the program. The questionnaire asks what you love and what you never eat, how long you are ready to cook, what is in your kitchen and when you shop. `node coach.mjs stores` finds supermarkets near your address (or roughly by IP) on OpenStreetMap, no key needed, and you pick the one you actually go to.
 
+Real prices: run `node coach.mjs browser-setup` once (a headless Chromium via Playwright, about 150 MB) and `node coach.mjs prices --store "Lidl" --items "chicken breast, oats, eggs"` opens the store website, searches each item and prints products with prices and pack sizes. The AI agent offers this itself. Checked on Lidl UK, Asda and VkusVill; sites with a bot check (Tesco, Pyaterochka) or a region lock are reported as blocked, then the prices are estimated.
+
 The plan is built from that store's products and your budget: two alternating weeks, 7 days each, with meal times and step-by-step recipes. Every meal has 2-3 options with the same calories and protein that use the same shopping list, so in the tracker you tap "Swap for" and nothing else needs buying. The shopping list is split by your shopping days.
 
 ## Plug in your AI
@@ -101,7 +103,7 @@ Set `START_DATE` to the tracker start date so the bot counts the same weeks. Rem
 ## Files
 
 ```
-coach.mjs              CLI: init, stores, generate, prompt, import, check, phrases, demo, serve, build, bot
+coach.mjs              CLI: init, stores, browser-setup, prices, browse, generate, prompt, import, check, phrases, demo, serve, build, bot
 CLAUDE.md, AGENTS.md   instructions for AI agents (Claude Code, Codex, Cursor)
 .claude/skills/coach   the full setup and coaching script for an agent
 prompts/coach.md       the coach's brain: method, safety rules, JSON format

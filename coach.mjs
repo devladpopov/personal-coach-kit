@@ -2,6 +2,9 @@
 // personal-coach-kit CLI. Node 18+, no dependencies.
 //   node coach.mjs init        questionnaire -> data/profile.json
 //   node coach.mjs stores      supermarkets near you (--near "city or postcode", default: by IP) from OpenStreetMap
+//   node coach.mjs browser-setup  optional: install a headless browser (Playwright) so prices can be read from store sites
+//   node coach.mjs prices      real prices from the store website (--store "Lidl" --items "oats, eggs" [--site lidl.co.uk])
+//   node coach.mjs browse URL  visible text of any page (--find "chicken" = price lines only)
 //   node coach.mjs generate    profile + prompts/coach.md -> your AI -> data/program.json, data/meals.json
 //   node coach.mjs prompt      write the full prompt to data/prompt.txt (paste it into any chat)
 //   node coach.mjs import F    take the AI answer saved in file F and split it into data/*.json
@@ -484,7 +487,10 @@ for (let i = 0; i < rest.length; i++) {
 }
 fs.mkdirSync(DATA, { recursive: true });
 const cmds = {
-  init, generate: () => generate(args), phrases: () => phrases(args), import: () => importAnswer(pos[0]), check: () => check(args), stores: () => stores(args), demo: () => demo(args),
+  init, generate: () => generate(args), phrases: () => phrases(args), import: () => importAnswer(pos[0]), check: () => check(args), stores: () => stores(args),
+  'browser-setup': async () => (await import('./lib/browser.mjs')).setupBrowser(ROOT),
+  prices: async () => (await import('./lib/browser.mjs')).prices(ROOT, args),
+  browse: async () => (await import('./lib/browser.mjs')).browse(ROOT, pos[0], args), demo: () => demo(args),
   prompt: () => { const f = path.join(DATA, 'prompt.txt'); fs.writeFileSync(f, buildPrompt()); console.log(`Prompt saved to ${path.relative(ROOT, f)}. Paste it into Claude, ChatGPT, Gemini or a local model, save the answer to a file and run: node coach.mjs import <file>`); },
   serve: () => serve(args), build: () => build(args), bot
 };
